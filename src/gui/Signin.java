@@ -55,7 +55,7 @@ public class Signin extends javax.swing.JFrame {
 
         jLabel2.setText("NIC Number");
 
-        nicTextField.setText("sandeepkv");
+        nicTextField.setText("200205300222");
         nicTextField.setPreferredSize(new java.awt.Dimension(233, 35));
 
         jLabel3.setText("Password");

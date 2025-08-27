@@ -7,6 +7,11 @@ import java.awt.Toolkit;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import panels.Dashboard;
+import panels.HospitaManagement;
+import panels.PatientManagement;
+import panels.ServiceManagement;
+import panels.StaffManagement;
 
 
 public class Home extends javax.swing.JFrame {
@@ -24,8 +29,8 @@ public class Home extends javax.swing.JFrame {
         //this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resource/icon.png")));
         initComponents();
         showMenu();
-//        loadPanel(new Dashboard(), dashboardButton, dashboardActiveBar);
-          //loadPanel(new InvoiceManagement(), invoiceManagementButton, invoiceManagementActiveBar);
+        loadPanel(new Dashboard(), dashboardButton, dashboardActiveBar);
+        //loadPanel(new InvoiceManagement(), invoiceManagementButton, invoiceManagementActiveBar);
     }
 
     private void loadPanel(JPanel panel, JButton selectedButton, JPanel selectActiveBar) {
@@ -34,20 +39,20 @@ public class Home extends javax.swing.JFrame {
         SwingUtilities.updateComponentTreeUI(MainPanel);
 
         dashboardButton.setBackground(dafaultLightColor);
-        userManagementButton.setBackground(dafaultLightColor);
-        productManagementButton.setBackground(dafaultLightColor);
-        stockManagementButton.setBackground(dafaultLightColor);
-        grnManagementButton.setBackground(dafaultLightColor);
+        hospitalManagementButton.setBackground(dafaultLightColor);
+        staffManagementButton.setBackground(dafaultLightColor);
+        serviceManagementButton.setBackground(dafaultLightColor);
+        patientManagementButton.setBackground(dafaultLightColor);
         invoiceManagementButton.setBackground(dafaultLightColor);
         returnManagementButton.setBackground(dafaultLightColor);
         quatationsButton.setBackground(dafaultLightColor);
         reportsButton.setBackground(dafaultLightColor);
 
         dashboardActiveBar.setBackground(dafaultLightColor);
-        userManagementActiveBar.setBackground(dafaultLightColor);
-        productManagementActiveBar.setBackground(dafaultLightColor);
-        stockManagementActiveBar.setBackground(dafaultLightColor);
-        grnManagementActiveBar.setBackground(dafaultLightColor);
+        hospitalManagementActiveBar.setBackground(dafaultLightColor);
+        staffManagementActiveBar.setBackground(dafaultLightColor);
+        serviceManagementActiveBar.setBackground(dafaultLightColor);
+        patientManagementActiveBar.setBackground(dafaultLightColor);
         invoiceManagementActiveBar.setBackground(dafaultLightColor);
         returnManagementActiveBar.setBackground(dafaultLightColor);
         quatationsActiveBar.setBackground(dafaultLightColor);
@@ -151,9 +156,9 @@ public class Home extends javax.swing.JFrame {
         MainPanel = new javax.swing.JPanel();
         NavigationPanel = new javax.swing.JPanel();
         dashboardActiveBar = new javax.swing.JPanel();
-        productManagementActiveBar = new javax.swing.JPanel();
-        stockManagementActiveBar = new javax.swing.JPanel();
-        grnManagementActiveBar = new javax.swing.JPanel();
+        staffManagementActiveBar = new javax.swing.JPanel();
+        serviceManagementActiveBar = new javax.swing.JPanel();
+        patientManagementActiveBar = new javax.swing.JPanel();
         invoiceManagementActiveBar = new javax.swing.JPanel();
         returnManagementActiveBar = new javax.swing.JPanel();
         quatationsActiveBar = new javax.swing.JPanel();
@@ -161,15 +166,15 @@ public class Home extends javax.swing.JFrame {
         jSeparator2 = new javax.swing.JSeparator();
         menuChangeButton = new javax.swing.JButton();
         dashboardButton = new javax.swing.JButton();
-        productManagementButton = new javax.swing.JButton();
-        stockManagementButton = new javax.swing.JButton();
-        grnManagementButton = new javax.swing.JButton();
+        staffManagementButton = new javax.swing.JButton();
+        serviceManagementButton = new javax.swing.JButton();
+        patientManagementButton = new javax.swing.JButton();
         invoiceManagementButton = new javax.swing.JButton();
         returnManagementButton = new javax.swing.JButton();
         quatationsButton = new javax.swing.JButton();
         reportsButton = new javax.swing.JButton();
-        userManagementActiveBar = new javax.swing.JPanel();
-        userManagementButton = new javax.swing.JButton();
+        hospitalManagementActiveBar = new javax.swing.JPanel();
+        hospitalManagementButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         jMenu2 = new javax.swing.JMenu();
@@ -183,6 +188,7 @@ public class Home extends javax.swing.JFrame {
 
         jPanel4.setPreferredSize(new java.awt.Dimension(158, 44));
 
+        notoficationsButton.setBackground(new java.awt.Color(255, 255, 255));
         notoficationsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/notification.png"))); // NOI18N
         notoficationsButton.setToolTipText("Notifications");
         notoficationsButton.setBorder(null);
@@ -195,6 +201,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        settingsButton.setBackground(new java.awt.Color(255, 255, 255));
         settingsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/settings.png"))); // NOI18N
         settingsButton.setToolTipText("Settings");
         settingsButton.setBorder(null);
@@ -207,6 +214,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setBackground(new java.awt.Color(255, 255, 255));
         jButton3.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/logout.png"))); // NOI18N
         jButton3.setToolTipText("Logout");
         jButton3.setBorder(null);
@@ -219,6 +227,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        jButton4.setBackground(new java.awt.Color(255, 255, 255));
         jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/database-download.png"))); // NOI18N
         jButton4.setToolTipText("Download Database Backup");
         jButton4.setBorder(null);
@@ -236,7 +245,7 @@ public class Home extends javax.swing.JFrame {
         jPanel4Layout.setHorizontalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addGap(39, 39, 39)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(notoficationsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -267,8 +276,8 @@ public class Home extends javax.swing.JFrame {
         jPanel5Layout.setHorizontalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 654, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -327,9 +336,9 @@ public class Home extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 194, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 194, Short.MAX_VALUE)
+                .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel2Layout.setVerticalGroup(
@@ -363,45 +372,45 @@ public class Home extends javax.swing.JFrame {
             .addGap(0, 40, Short.MAX_VALUE)
         );
 
-        productManagementActiveBar.setBackground(new java.awt.Color(0, 105, 75));
-        productManagementActiveBar.setPreferredSize(new java.awt.Dimension(4, 40));
+        staffManagementActiveBar.setBackground(new java.awt.Color(0, 105, 75));
+        staffManagementActiveBar.setPreferredSize(new java.awt.Dimension(4, 40));
 
-        javax.swing.GroupLayout productManagementActiveBarLayout = new javax.swing.GroupLayout(productManagementActiveBar);
-        productManagementActiveBar.setLayout(productManagementActiveBarLayout);
-        productManagementActiveBarLayout.setHorizontalGroup(
-            productManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout staffManagementActiveBarLayout = new javax.swing.GroupLayout(staffManagementActiveBar);
+        staffManagementActiveBar.setLayout(staffManagementActiveBarLayout);
+        staffManagementActiveBarLayout.setHorizontalGroup(
+            staffManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 4, Short.MAX_VALUE)
         );
-        productManagementActiveBarLayout.setVerticalGroup(
-            productManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        staffManagementActiveBarLayout.setVerticalGroup(
+            staffManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 40, Short.MAX_VALUE)
         );
 
-        stockManagementActiveBar.setBackground(new java.awt.Color(0, 105, 75));
-        stockManagementActiveBar.setPreferredSize(new java.awt.Dimension(4, 40));
+        serviceManagementActiveBar.setBackground(new java.awt.Color(0, 105, 75));
+        serviceManagementActiveBar.setPreferredSize(new java.awt.Dimension(4, 40));
 
-        javax.swing.GroupLayout stockManagementActiveBarLayout = new javax.swing.GroupLayout(stockManagementActiveBar);
-        stockManagementActiveBar.setLayout(stockManagementActiveBarLayout);
-        stockManagementActiveBarLayout.setHorizontalGroup(
-            stockManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout serviceManagementActiveBarLayout = new javax.swing.GroupLayout(serviceManagementActiveBar);
+        serviceManagementActiveBar.setLayout(serviceManagementActiveBarLayout);
+        serviceManagementActiveBarLayout.setHorizontalGroup(
+            serviceManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 4, Short.MAX_VALUE)
         );
-        stockManagementActiveBarLayout.setVerticalGroup(
-            stockManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        serviceManagementActiveBarLayout.setVerticalGroup(
+            serviceManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 40, Short.MAX_VALUE)
         );
 
-        grnManagementActiveBar.setBackground(new java.awt.Color(0, 105, 75));
-        grnManagementActiveBar.setPreferredSize(new java.awt.Dimension(4, 40));
+        patientManagementActiveBar.setBackground(new java.awt.Color(0, 105, 75));
+        patientManagementActiveBar.setPreferredSize(new java.awt.Dimension(4, 40));
 
-        javax.swing.GroupLayout grnManagementActiveBarLayout = new javax.swing.GroupLayout(grnManagementActiveBar);
-        grnManagementActiveBar.setLayout(grnManagementActiveBarLayout);
-        grnManagementActiveBarLayout.setHorizontalGroup(
-            grnManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout patientManagementActiveBarLayout = new javax.swing.GroupLayout(patientManagementActiveBar);
+        patientManagementActiveBar.setLayout(patientManagementActiveBarLayout);
+        patientManagementActiveBarLayout.setHorizontalGroup(
+            patientManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 4, Short.MAX_VALUE)
         );
-        grnManagementActiveBarLayout.setVerticalGroup(
-            grnManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        patientManagementActiveBarLayout.setVerticalGroup(
+            patientManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 40, Short.MAX_VALUE)
         );
 
@@ -464,6 +473,7 @@ public class Home extends javax.swing.JFrame {
         jSeparator2.setBackground(new java.awt.Color(0, 105, 75));
         jSeparator2.setForeground(new java.awt.Color(0, 105, 75));
 
+        menuChangeButton.setBackground(new java.awt.Color(255, 255, 255));
         menuChangeButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/menu.png"))); // NOI18N
         menuChangeButton.setToolTipText("Maximize Menu");
         menuChangeButton.setBorder(null);
@@ -477,6 +487,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        dashboardButton.setBackground(new java.awt.Color(255, 255, 255));
         dashboardButton.setForeground(new java.awt.Color(51, 51, 51));
         dashboardButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/dashboard.png"))); // NOI18N
         dashboardButton.setText("Dashboard");
@@ -491,51 +502,55 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        productManagementButton.setForeground(new java.awt.Color(51, 51, 51));
-        productManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/product.png"))); // NOI18N
-        productManagementButton.setText("Product Management");
-        productManagementButton.setToolTipText("Product Management");
-        productManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        productManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        productManagementButton.setIconTextGap(15);
-        productManagementButton.setPreferredSize(new java.awt.Dimension(228, 40));
-        productManagementButton.addActionListener(new java.awt.event.ActionListener() {
+        staffManagementButton.setBackground(new java.awt.Color(255, 255, 255));
+        staffManagementButton.setForeground(new java.awt.Color(51, 51, 51));
+        staffManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/staff.png"))); // NOI18N
+        staffManagementButton.setText("Staff Managements");
+        staffManagementButton.setToolTipText("Product Management");
+        staffManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        staffManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        staffManagementButton.setIconTextGap(15);
+        staffManagementButton.setPreferredSize(new java.awt.Dimension(228, 40));
+        staffManagementButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                productManagementButtonActionPerformed(evt);
+                staffManagementButtonActionPerformed(evt);
             }
         });
 
-        stockManagementButton.setForeground(new java.awt.Color(51, 51, 51));
-        stockManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/stock.png"))); // NOI18N
-        stockManagementButton.setText("Stock Management");
-        stockManagementButton.setToolTipText("Stock Management");
-        stockManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        stockManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        stockManagementButton.setIconTextGap(15);
-        stockManagementButton.setPreferredSize(new java.awt.Dimension(228, 40));
-        stockManagementButton.addActionListener(new java.awt.event.ActionListener() {
+        serviceManagementButton.setBackground(new java.awt.Color(255, 255, 255));
+        serviceManagementButton.setForeground(new java.awt.Color(51, 51, 51));
+        serviceManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/service.png"))); // NOI18N
+        serviceManagementButton.setText("Service Management");
+        serviceManagementButton.setToolTipText("Stock Management");
+        serviceManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        serviceManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        serviceManagementButton.setIconTextGap(15);
+        serviceManagementButton.setPreferredSize(new java.awt.Dimension(228, 40));
+        serviceManagementButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                stockManagementButtonActionPerformed(evt);
+                serviceManagementButtonActionPerformed(evt);
             }
         });
 
-        grnManagementButton.setForeground(new java.awt.Color(51, 51, 51));
-        grnManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/grn.png"))); // NOI18N
-        grnManagementButton.setText("GRN Management");
-        grnManagementButton.setToolTipText("GRN Management");
-        grnManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        grnManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        grnManagementButton.setIconTextGap(15);
-        grnManagementButton.setPreferredSize(new java.awt.Dimension(228, 40));
-        grnManagementButton.addActionListener(new java.awt.event.ActionListener() {
+        patientManagementButton.setBackground(new java.awt.Color(255, 255, 255));
+        patientManagementButton.setForeground(new java.awt.Color(51, 51, 51));
+        patientManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/patient.png"))); // NOI18N
+        patientManagementButton.setText("Patient Management");
+        patientManagementButton.setToolTipText("GRN Management");
+        patientManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        patientManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        patientManagementButton.setIconTextGap(15);
+        patientManagementButton.setPreferredSize(new java.awt.Dimension(228, 40));
+        patientManagementButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                grnManagementButtonActionPerformed(evt);
+                patientManagementButtonActionPerformed(evt);
             }
         });
 
+        invoiceManagementButton.setBackground(new java.awt.Color(255, 255, 255));
         invoiceManagementButton.setForeground(new java.awt.Color(51, 51, 51));
-        invoiceManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/invoice.png"))); // NOI18N
-        invoiceManagementButton.setText("Invoice Management");
+        invoiceManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/appointment.png"))); // NOI18N
+        invoiceManagementButton.setText("Appointment Management");
         invoiceManagementButton.setToolTipText("Invoice Management");
         invoiceManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
         invoiceManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -547,9 +562,10 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        returnManagementButton.setBackground(new java.awt.Color(255, 255, 255));
         returnManagementButton.setForeground(new java.awt.Color(51, 51, 51));
-        returnManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/return.png"))); // NOI18N
-        returnManagementButton.setText("Return Management");
+        returnManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/billing.png"))); // NOI18N
+        returnManagementButton.setText("Billing Management");
         returnManagementButton.setToolTipText("Return Management");
         returnManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
         returnManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -561,9 +577,10 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        quatationsButton.setBackground(new java.awt.Color(255, 255, 255));
         quatationsButton.setForeground(new java.awt.Color(51, 51, 51));
-        quatationsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/quatation.png"))); // NOI18N
-        quatationsButton.setText("Quatations");
+        quatationsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/report.png"))); // NOI18N
+        quatationsButton.setText("Reports");
         quatationsButton.setToolTipText("Quatations");
         quatationsButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
         quatationsButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -575,6 +592,7 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
+        reportsButton.setBackground(new java.awt.Color(255, 255, 255));
         reportsButton.setForeground(new java.awt.Color(51, 51, 51));
         reportsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/report.png"))); // NOI18N
         reportsButton.setText("Reports");
@@ -589,31 +607,32 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        userManagementActiveBar.setBackground(new java.awt.Color(0, 105, 75));
-        userManagementActiveBar.setPreferredSize(new java.awt.Dimension(4, 40));
+        hospitalManagementActiveBar.setBackground(new java.awt.Color(0, 105, 75));
+        hospitalManagementActiveBar.setPreferredSize(new java.awt.Dimension(4, 40));
 
-        javax.swing.GroupLayout userManagementActiveBarLayout = new javax.swing.GroupLayout(userManagementActiveBar);
-        userManagementActiveBar.setLayout(userManagementActiveBarLayout);
-        userManagementActiveBarLayout.setHorizontalGroup(
-            userManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout hospitalManagementActiveBarLayout = new javax.swing.GroupLayout(hospitalManagementActiveBar);
+        hospitalManagementActiveBar.setLayout(hospitalManagementActiveBarLayout);
+        hospitalManagementActiveBarLayout.setHorizontalGroup(
+            hospitalManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 4, Short.MAX_VALUE)
         );
-        userManagementActiveBarLayout.setVerticalGroup(
-            userManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        hospitalManagementActiveBarLayout.setVerticalGroup(
+            hospitalManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 40, Short.MAX_VALUE)
         );
 
-        userManagementButton.setForeground(new java.awt.Color(51, 51, 51));
-        userManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/user.png"))); // NOI18N
-        userManagementButton.setText("Patient Management");
-        userManagementButton.setToolTipText("User Management");
-        userManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        userManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        userManagementButton.setIconTextGap(15);
-        userManagementButton.setPreferredSize(new java.awt.Dimension(228, 40));
-        userManagementButton.addActionListener(new java.awt.event.ActionListener() {
+        hospitalManagementButton.setBackground(new java.awt.Color(255, 255, 255));
+        hospitalManagementButton.setForeground(new java.awt.Color(51, 51, 51));
+        hospitalManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/hospital.png"))); // NOI18N
+        hospitalManagementButton.setText("Hospital Management");
+        hospitalManagementButton.setToolTipText("User Management");
+        hospitalManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        hospitalManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        hospitalManagementButton.setIconTextGap(15);
+        hospitalManagementButton.setPreferredSize(new java.awt.Dimension(228, 40));
+        hospitalManagementButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                userManagementButtonActionPerformed(evt);
+                hospitalManagementButtonActionPerformed(evt);
             }
         });
 
@@ -633,17 +652,17 @@ public class Home extends javax.swing.JFrame {
                         .addGap(0, 0, 0)
                         .addComponent(dashboardButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(NavigationPanelLayout.createSequentialGroup()
-                        .addComponent(productManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(staffManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(productManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(staffManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(NavigationPanelLayout.createSequentialGroup()
-                        .addComponent(stockManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(serviceManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(stockManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(serviceManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(NavigationPanelLayout.createSequentialGroup()
-                        .addComponent(grnManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(patientManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(grnManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(patientManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(NavigationPanelLayout.createSequentialGroup()
                         .addComponent(invoiceManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
@@ -661,9 +680,9 @@ public class Home extends javax.swing.JFrame {
                         .addGap(0, 0, 0)
                         .addComponent(reportsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(NavigationPanelLayout.createSequentialGroup()
-                        .addComponent(userManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(hospitalManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(userManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(hospitalManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         NavigationPanelLayout.setVerticalGroup(
@@ -677,18 +696,18 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(dashboardButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
                 .addGroup(NavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(userManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(userManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(hospitalManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hospitalManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
                 .addGroup(NavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(productManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(productManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(staffManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(staffManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(NavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(stockManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(stockManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(serviceManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(serviceManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(NavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(grnManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(grnManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(patientManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(patientManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(NavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(invoiceManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(invoiceManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -711,7 +730,7 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addComponent(NavigationPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, 0)
-                .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 870, Short.MAX_VALUE))
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -723,8 +742,8 @@ public class Home extends javax.swing.JFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jPanel8, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -764,20 +783,20 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_menuChangeButtonActionPerformed
 
     private void dashboardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardButtonActionPerformed
-        //loadPanel(new Dashboard(), dashboardButton, dashboardActiveBar);
+        loadPanel(new Dashboard(), dashboardButton, dashboardActiveBar);
     }//GEN-LAST:event_dashboardButtonActionPerformed
 
-    private void productManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_productManagementButtonActionPerformed
-        //loadPanel(new ProductManagement(this), productManagementButton, productManagementActiveBar);
-    }//GEN-LAST:event_productManagementButtonActionPerformed
+    private void staffManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staffManagementButtonActionPerformed
+        loadPanel(new StaffManagement(), staffManagementButton, staffManagementActiveBar);
+    }//GEN-LAST:event_staffManagementButtonActionPerformed
 
-    private void stockManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_stockManagementButtonActionPerformed
-        //loadPanel(new StockManagement(this), stockManagementButton, stockManagementActiveBar);
-    }//GEN-LAST:event_stockManagementButtonActionPerformed
+    private void serviceManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serviceManagementButtonActionPerformed
+        loadPanel(new ServiceManagement(), serviceManagementButton, serviceManagementActiveBar);
+    }//GEN-LAST:event_serviceManagementButtonActionPerformed
 
-    private void grnManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_grnManagementButtonActionPerformed
-        //loadPanel(new GrnManagement(), grnManagementButton, grnManagementActiveBar);
-    }//GEN-LAST:event_grnManagementButtonActionPerformed
+    private void patientManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientManagementButtonActionPerformed
+        loadPanel(new PatientManagement(), patientManagementButton, patientManagementActiveBar);
+    }//GEN-LAST:event_patientManagementButtonActionPerformed
 
     private void invoiceManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invoiceManagementButtonActionPerformed
         //loadPanel(new InvoiceManagement(), invoiceManagementButton, invoiceManagementActiveBar);
@@ -786,14 +805,6 @@ public class Home extends javax.swing.JFrame {
     private void returnManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnManagementButtonActionPerformed
         //loadPanel(new ReturnManagement(), returnManagementButton, returnManagementActiveBar);
     }//GEN-LAST:event_returnManagementButtonActionPerformed
-
-    private void quatationsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quatationsButtonActionPerformed
-        //loadPanel(new Quatations(), quatationsButton, quatationsActiveBar);
-    }//GEN-LAST:event_quatationsButtonActionPerformed
-
-    private void reportsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportsButtonActionPerformed
-        //loadPanel(new Reports(), reportsButton, reportsActiveBar);
-    }//GEN-LAST:event_reportsButtonActionPerformed
 
     private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
         // TODO add your handling code here:
@@ -820,9 +831,17 @@ public class Home extends javax.swing.JFrame {
 
     }//GEN-LAST:event_jButton4ActionPerformed
 
-    private void userManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_userManagementButtonActionPerformed
-       // loadPanel(new UserManagement(this), userManagementButton, userManagementActiveBar);
-    }//GEN-LAST:event_userManagementButtonActionPerformed
+    private void hospitalManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hospitalManagementButtonActionPerformed
+       loadPanel(new HospitaManagement(), hospitalManagementButton, hospitalManagementActiveBar);
+    }//GEN-LAST:event_hospitalManagementButtonActionPerformed
+
+    private void reportsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportsButtonActionPerformed
+        //loadPanel(new Reports(), reportsButton, reportsActiveBar);
+    }//GEN-LAST:event_reportsButtonActionPerformed
+
+    private void quatationsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quatationsButtonActionPerformed
+        //loadPanel(new Quatations(), quatationsButton, quatationsActiveBar);
+    }//GEN-LAST:event_quatationsButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -871,8 +890,8 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel NavigationPanel;
     private javax.swing.JPanel dashboardActiveBar;
     private javax.swing.JButton dashboardButton;
-    private javax.swing.JPanel grnManagementActiveBar;
-    private javax.swing.JButton grnManagementButton;
+    private javax.swing.JPanel hospitalManagementActiveBar;
+    private javax.swing.JButton hospitalManagementButton;
     private javax.swing.JPanel invoiceManagementActiveBar;
     private javax.swing.JButton invoiceManagementButton;
     private javax.swing.JButton jButton3;
@@ -893,18 +912,18 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JButton menuChangeButton;
     private javax.swing.JButton notoficationsButton;
-    private javax.swing.JPanel productManagementActiveBar;
-    private javax.swing.JButton productManagementButton;
+    private javax.swing.JPanel patientManagementActiveBar;
+    private javax.swing.JButton patientManagementButton;
     private javax.swing.JPanel quatationsActiveBar;
     private javax.swing.JButton quatationsButton;
     private javax.swing.JPanel reportsActiveBar;
     private javax.swing.JButton reportsButton;
     private javax.swing.JPanel returnManagementActiveBar;
     private javax.swing.JButton returnManagementButton;
+    private javax.swing.JPanel serviceManagementActiveBar;
+    private javax.swing.JButton serviceManagementButton;
     private javax.swing.JButton settingsButton;
-    private javax.swing.JPanel stockManagementActiveBar;
-    private javax.swing.JButton stockManagementButton;
-    private javax.swing.JPanel userManagementActiveBar;
-    private javax.swing.JButton userManagementButton;
+    private javax.swing.JPanel staffManagementActiveBar;
+    private javax.swing.JButton staffManagementButton;
     // End of variables declaration//GEN-END:variables
 }
