@@ -7,9 +7,12 @@ import java.awt.Toolkit;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import panels.AppointmentManagement;
+import panels.BillingManagement;
 import panels.Dashboard;
 import panels.HospitaManagement;
 import panels.PatientManagement;
+import panels.ReportsManagement;
 import panels.ServiceManagement;
 import panels.StaffManagement;
 
@@ -43,20 +46,18 @@ public class Home extends javax.swing.JFrame {
         staffManagementButton.setBackground(dafaultLightColor);
         serviceManagementButton.setBackground(dafaultLightColor);
         patientManagementButton.setBackground(dafaultLightColor);
-        invoiceManagementButton.setBackground(dafaultLightColor);
-        returnManagementButton.setBackground(dafaultLightColor);
-        quatationsButton.setBackground(dafaultLightColor);
-        reportsButton.setBackground(dafaultLightColor);
+        appointmentManagementButton.setBackground(dafaultLightColor);
+        billingManagementButton.setBackground(dafaultLightColor);
+        reportsManagementButton.setBackground(dafaultLightColor);
 
         dashboardActiveBar.setBackground(dafaultLightColor);
         hospitalManagementActiveBar.setBackground(dafaultLightColor);
         staffManagementActiveBar.setBackground(dafaultLightColor);
         serviceManagementActiveBar.setBackground(dafaultLightColor);
         patientManagementActiveBar.setBackground(dafaultLightColor);
-        invoiceManagementActiveBar.setBackground(dafaultLightColor);
-        returnManagementActiveBar.setBackground(dafaultLightColor);
-        quatationsActiveBar.setBackground(dafaultLightColor);
-        reportsActiveBar.setBackground(dafaultLightColor);
+        appointmentManagementActiveBar.setBackground(dafaultLightColor);
+        billingManagementActiveBar.setBackground(dafaultLightColor);
+        reportManagementActiveBar.setBackground(dafaultLightColor);
 
         selectedButton.setBackground(selectedButtonColor);
         selectActiveBar.setBackground(primaryColor);
@@ -159,20 +160,18 @@ public class Home extends javax.swing.JFrame {
         staffManagementActiveBar = new javax.swing.JPanel();
         serviceManagementActiveBar = new javax.swing.JPanel();
         patientManagementActiveBar = new javax.swing.JPanel();
-        invoiceManagementActiveBar = new javax.swing.JPanel();
-        returnManagementActiveBar = new javax.swing.JPanel();
-        quatationsActiveBar = new javax.swing.JPanel();
-        reportsActiveBar = new javax.swing.JPanel();
+        appointmentManagementActiveBar = new javax.swing.JPanel();
+        billingManagementActiveBar = new javax.swing.JPanel();
+        reportManagementActiveBar = new javax.swing.JPanel();
         jSeparator2 = new javax.swing.JSeparator();
         menuChangeButton = new javax.swing.JButton();
         dashboardButton = new javax.swing.JButton();
         staffManagementButton = new javax.swing.JButton();
         serviceManagementButton = new javax.swing.JButton();
         patientManagementButton = new javax.swing.JButton();
-        invoiceManagementButton = new javax.swing.JButton();
-        returnManagementButton = new javax.swing.JButton();
-        quatationsButton = new javax.swing.JButton();
-        reportsButton = new javax.swing.JButton();
+        appointmentManagementButton = new javax.swing.JButton();
+        billingManagementButton = new javax.swing.JButton();
+        reportsManagementButton = new javax.swing.JButton();
         hospitalManagementActiveBar = new javax.swing.JPanel();
         hospitalManagementButton = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -414,59 +413,45 @@ public class Home extends javax.swing.JFrame {
             .addGap(0, 40, Short.MAX_VALUE)
         );
 
-        invoiceManagementActiveBar.setBackground(new java.awt.Color(0, 105, 75));
-        invoiceManagementActiveBar.setPreferredSize(new java.awt.Dimension(4, 40));
+        appointmentManagementActiveBar.setBackground(new java.awt.Color(0, 105, 75));
+        appointmentManagementActiveBar.setPreferredSize(new java.awt.Dimension(4, 40));
 
-        javax.swing.GroupLayout invoiceManagementActiveBarLayout = new javax.swing.GroupLayout(invoiceManagementActiveBar);
-        invoiceManagementActiveBar.setLayout(invoiceManagementActiveBarLayout);
-        invoiceManagementActiveBarLayout.setHorizontalGroup(
-            invoiceManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout appointmentManagementActiveBarLayout = new javax.swing.GroupLayout(appointmentManagementActiveBar);
+        appointmentManagementActiveBar.setLayout(appointmentManagementActiveBarLayout);
+        appointmentManagementActiveBarLayout.setHorizontalGroup(
+            appointmentManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 4, Short.MAX_VALUE)
         );
-        invoiceManagementActiveBarLayout.setVerticalGroup(
-            invoiceManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        appointmentManagementActiveBarLayout.setVerticalGroup(
+            appointmentManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 40, Short.MAX_VALUE)
         );
 
-        returnManagementActiveBar.setBackground(new java.awt.Color(0, 105, 75));
-        returnManagementActiveBar.setPreferredSize(new java.awt.Dimension(4, 40));
+        billingManagementActiveBar.setBackground(new java.awt.Color(0, 105, 75));
+        billingManagementActiveBar.setPreferredSize(new java.awt.Dimension(4, 40));
 
-        javax.swing.GroupLayout returnManagementActiveBarLayout = new javax.swing.GroupLayout(returnManagementActiveBar);
-        returnManagementActiveBar.setLayout(returnManagementActiveBarLayout);
-        returnManagementActiveBarLayout.setHorizontalGroup(
-            returnManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout billingManagementActiveBarLayout = new javax.swing.GroupLayout(billingManagementActiveBar);
+        billingManagementActiveBar.setLayout(billingManagementActiveBarLayout);
+        billingManagementActiveBarLayout.setHorizontalGroup(
+            billingManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 4, Short.MAX_VALUE)
         );
-        returnManagementActiveBarLayout.setVerticalGroup(
-            returnManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        billingManagementActiveBarLayout.setVerticalGroup(
+            billingManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 40, Short.MAX_VALUE)
         );
 
-        quatationsActiveBar.setBackground(new java.awt.Color(0, 105, 75));
-        quatationsActiveBar.setPreferredSize(new java.awt.Dimension(4, 40));
+        reportManagementActiveBar.setBackground(new java.awt.Color(0, 105, 75));
+        reportManagementActiveBar.setPreferredSize(new java.awt.Dimension(4, 40));
 
-        javax.swing.GroupLayout quatationsActiveBarLayout = new javax.swing.GroupLayout(quatationsActiveBar);
-        quatationsActiveBar.setLayout(quatationsActiveBarLayout);
-        quatationsActiveBarLayout.setHorizontalGroup(
-            quatationsActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        javax.swing.GroupLayout reportManagementActiveBarLayout = new javax.swing.GroupLayout(reportManagementActiveBar);
+        reportManagementActiveBar.setLayout(reportManagementActiveBarLayout);
+        reportManagementActiveBarLayout.setHorizontalGroup(
+            reportManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 4, Short.MAX_VALUE)
         );
-        quatationsActiveBarLayout.setVerticalGroup(
-            quatationsActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 40, Short.MAX_VALUE)
-        );
-
-        reportsActiveBar.setBackground(new java.awt.Color(0, 105, 75));
-        reportsActiveBar.setPreferredSize(new java.awt.Dimension(4, 40));
-
-        javax.swing.GroupLayout reportsActiveBarLayout = new javax.swing.GroupLayout(reportsActiveBar);
-        reportsActiveBar.setLayout(reportsActiveBarLayout);
-        reportsActiveBarLayout.setHorizontalGroup(
-            reportsActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 4, Short.MAX_VALUE)
-        );
-        reportsActiveBarLayout.setVerticalGroup(
-            reportsActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+        reportManagementActiveBarLayout.setVerticalGroup(
+            reportManagementActiveBarLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 40, Short.MAX_VALUE)
         );
 
@@ -547,63 +532,48 @@ public class Home extends javax.swing.JFrame {
             }
         });
 
-        invoiceManagementButton.setBackground(new java.awt.Color(255, 255, 255));
-        invoiceManagementButton.setForeground(new java.awt.Color(51, 51, 51));
-        invoiceManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/appointment.png"))); // NOI18N
-        invoiceManagementButton.setText("Appointment Management");
-        invoiceManagementButton.setToolTipText("Invoice Management");
-        invoiceManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        invoiceManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        invoiceManagementButton.setIconTextGap(15);
-        invoiceManagementButton.setPreferredSize(new java.awt.Dimension(228, 40));
-        invoiceManagementButton.addActionListener(new java.awt.event.ActionListener() {
+        appointmentManagementButton.setBackground(new java.awt.Color(255, 255, 255));
+        appointmentManagementButton.setForeground(new java.awt.Color(51, 51, 51));
+        appointmentManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/appointment.png"))); // NOI18N
+        appointmentManagementButton.setText("Appointment Management");
+        appointmentManagementButton.setToolTipText("Invoice Management");
+        appointmentManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        appointmentManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        appointmentManagementButton.setIconTextGap(15);
+        appointmentManagementButton.setPreferredSize(new java.awt.Dimension(228, 40));
+        appointmentManagementButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                invoiceManagementButtonActionPerformed(evt);
+                appointmentManagementButtonActionPerformed(evt);
             }
         });
 
-        returnManagementButton.setBackground(new java.awt.Color(255, 255, 255));
-        returnManagementButton.setForeground(new java.awt.Color(51, 51, 51));
-        returnManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/billing.png"))); // NOI18N
-        returnManagementButton.setText("Billing Management");
-        returnManagementButton.setToolTipText("Return Management");
-        returnManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        returnManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        returnManagementButton.setIconTextGap(15);
-        returnManagementButton.setPreferredSize(new java.awt.Dimension(228, 40));
-        returnManagementButton.addActionListener(new java.awt.event.ActionListener() {
+        billingManagementButton.setBackground(new java.awt.Color(255, 255, 255));
+        billingManagementButton.setForeground(new java.awt.Color(51, 51, 51));
+        billingManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/billing.png"))); // NOI18N
+        billingManagementButton.setText("Billing Management");
+        billingManagementButton.setToolTipText("Return Management");
+        billingManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        billingManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        billingManagementButton.setIconTextGap(15);
+        billingManagementButton.setPreferredSize(new java.awt.Dimension(228, 40));
+        billingManagementButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                returnManagementButtonActionPerformed(evt);
+                billingManagementButtonActionPerformed(evt);
             }
         });
 
-        quatationsButton.setBackground(new java.awt.Color(255, 255, 255));
-        quatationsButton.setForeground(new java.awt.Color(51, 51, 51));
-        quatationsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/report.png"))); // NOI18N
-        quatationsButton.setText("Reports");
-        quatationsButton.setToolTipText("Quatations");
-        quatationsButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        quatationsButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        quatationsButton.setIconTextGap(15);
-        quatationsButton.setPreferredSize(new java.awt.Dimension(228, 40));
-        quatationsButton.addActionListener(new java.awt.event.ActionListener() {
+        reportsManagementButton.setBackground(new java.awt.Color(255, 255, 255));
+        reportsManagementButton.setForeground(new java.awt.Color(51, 51, 51));
+        reportsManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/report.png"))); // NOI18N
+        reportsManagementButton.setText("Reports");
+        reportsManagementButton.setToolTipText("Quatations");
+        reportsManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
+        reportsManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        reportsManagementButton.setIconTextGap(15);
+        reportsManagementButton.setPreferredSize(new java.awt.Dimension(228, 40));
+        reportsManagementButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                quatationsButtonActionPerformed(evt);
-            }
-        });
-
-        reportsButton.setBackground(new java.awt.Color(255, 255, 255));
-        reportsButton.setForeground(new java.awt.Color(51, 51, 51));
-        reportsButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/report.png"))); // NOI18N
-        reportsButton.setText("Reports");
-        reportsButton.setToolTipText("Reports");
-        reportsButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
-        reportsButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        reportsButton.setIconTextGap(15);
-        reportsButton.setPreferredSize(new java.awt.Dimension(228, 40));
-        reportsButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                reportsButtonActionPerformed(evt);
+                reportsManagementButtonActionPerformed(evt);
             }
         });
 
@@ -664,21 +634,17 @@ public class Home extends javax.swing.JFrame {
                         .addGap(0, 0, 0)
                         .addComponent(patientManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(NavigationPanelLayout.createSequentialGroup()
-                        .addComponent(invoiceManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(appointmentManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(invoiceManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(appointmentManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(NavigationPanelLayout.createSequentialGroup()
-                        .addComponent(returnManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(billingManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(returnManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(billingManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(NavigationPanelLayout.createSequentialGroup()
-                        .addComponent(quatationsActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(reportManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
-                        .addComponent(quatationsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(NavigationPanelLayout.createSequentialGroup()
-                        .addComponent(reportsActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, 0)
-                        .addComponent(reportsButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(reportsManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(NavigationPanelLayout.createSequentialGroup()
                         .addComponent(hospitalManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
@@ -709,17 +675,14 @@ public class Home extends javax.swing.JFrame {
                     .addComponent(patientManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(patientManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(NavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(invoiceManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(invoiceManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(appointmentManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(appointmentManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(NavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(returnManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(returnManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(billingManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(billingManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGroup(NavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(quatationsActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(quatationsButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGroup(NavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(reportsActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(reportsButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(reportManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(reportsManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -798,13 +761,13 @@ public class Home extends javax.swing.JFrame {
         loadPanel(new PatientManagement(), patientManagementButton, patientManagementActiveBar);
     }//GEN-LAST:event_patientManagementButtonActionPerformed
 
-    private void invoiceManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_invoiceManagementButtonActionPerformed
-        //loadPanel(new InvoiceManagement(), invoiceManagementButton, invoiceManagementActiveBar);
-    }//GEN-LAST:event_invoiceManagementButtonActionPerformed
+    private void appointmentManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appointmentManagementButtonActionPerformed
+        loadPanel(new AppointmentManagement(), appointmentManagementButton, appointmentManagementActiveBar);
+    }//GEN-LAST:event_appointmentManagementButtonActionPerformed
 
-    private void returnManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnManagementButtonActionPerformed
-        //loadPanel(new ReturnManagement(), returnManagementButton, returnManagementActiveBar);
-    }//GEN-LAST:event_returnManagementButtonActionPerformed
+    private void billingManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_billingManagementButtonActionPerformed
+        loadPanel(new BillingManagement(), billingManagementButton, billingManagementActiveBar);
+    }//GEN-LAST:event_billingManagementButtonActionPerformed
 
     private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
         // TODO add your handling code here:
@@ -835,13 +798,9 @@ public class Home extends javax.swing.JFrame {
        loadPanel(new HospitaManagement(), hospitalManagementButton, hospitalManagementActiveBar);
     }//GEN-LAST:event_hospitalManagementButtonActionPerformed
 
-    private void reportsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportsButtonActionPerformed
-        //loadPanel(new Reports(), reportsButton, reportsActiveBar);
-    }//GEN-LAST:event_reportsButtonActionPerformed
-
-    private void quatationsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_quatationsButtonActionPerformed
-        //loadPanel(new Quatations(), quatationsButton, quatationsActiveBar);
-    }//GEN-LAST:event_quatationsButtonActionPerformed
+    private void reportsManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportsManagementButtonActionPerformed
+        loadPanel(new ReportsManagement(), reportsManagementButton, reportManagementActiveBar);
+    }//GEN-LAST:event_reportsManagementButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -888,12 +847,14 @@ public class Home extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel MainPanel;
     private javax.swing.JPanel NavigationPanel;
+    private javax.swing.JPanel appointmentManagementActiveBar;
+    private javax.swing.JButton appointmentManagementButton;
+    private javax.swing.JPanel billingManagementActiveBar;
+    private javax.swing.JButton billingManagementButton;
     private javax.swing.JPanel dashboardActiveBar;
     private javax.swing.JButton dashboardButton;
     private javax.swing.JPanel hospitalManagementActiveBar;
     private javax.swing.JButton hospitalManagementButton;
-    private javax.swing.JPanel invoiceManagementActiveBar;
-    private javax.swing.JButton invoiceManagementButton;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
@@ -914,12 +875,8 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton notoficationsButton;
     private javax.swing.JPanel patientManagementActiveBar;
     private javax.swing.JButton patientManagementButton;
-    private javax.swing.JPanel quatationsActiveBar;
-    private javax.swing.JButton quatationsButton;
-    private javax.swing.JPanel reportsActiveBar;
-    private javax.swing.JButton reportsButton;
-    private javax.swing.JPanel returnManagementActiveBar;
-    private javax.swing.JButton returnManagementButton;
+    private javax.swing.JPanel reportManagementActiveBar;
+    private javax.swing.JButton reportsManagementButton;
     private javax.swing.JPanel serviceManagementActiveBar;
     private javax.swing.JButton serviceManagementButton;
     private javax.swing.JButton settingsButton;

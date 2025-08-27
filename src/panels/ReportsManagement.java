@@ -100,7 +100,7 @@ public class ReportsManagement extends javax.swing.JPanel {
 
         jLabel1.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 105, 75));
-        jLabel1.setText("Appointment Management");
+        jLabel1.setText("Reports Management");
         jLabel1.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
 
         jPanel2.setLayout(new java.awt.GridLayout(1, 0));

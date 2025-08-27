@@ -14,10 +14,10 @@ public class HospitaManagement extends javax.swing.JPanel {
 
     public HospitaManagement() {
         initComponents();
-        loadInvoiceTable();
+        loadHospitalTable();
     }
 
-    public void loadInvoiceTable() {
+    public void loadHospitalTable() {
         try {
             String search = searchTextField.getText();
             int sortBy = sortByComboBox.getSelectedIndex();
@@ -70,7 +70,7 @@ public class HospitaManagement extends javax.swing.JPanel {
     private void clearSearch() {
         searchTextField.setText("");
         sortByComboBox.setSelectedIndex(0);
-        loadInvoiceTable();
+        loadHospitalTable();
     }
 
     /**
@@ -331,7 +331,7 @@ public class HospitaManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_clearSearchButtonActionPerformed
 
     private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
-        loadInvoiceTable();
+        loadHospitalTable();
     }//GEN-LAST:event_searchTextFieldActionPerformed
 
     private void newInvoiceButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newInvoiceButton1ActionPerformed
@@ -339,7 +339,7 @@ public class HospitaManagement extends javax.swing.JPanel {
 
     private void sortByComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_sortByComboBoxItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
-            loadInvoiceTable();
+            loadHospitalTable();
         }
     }//GEN-LAST:event_sortByComboBoxItemStateChanged
 
@@ -349,7 +349,7 @@ public class HospitaManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_newInvoiceButtonActionPerformed
 
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
-        loadInvoiceTable();
+        loadHospitalTable();
     }//GEN-LAST:event_searchTextFieldKeyReleased
 
 
