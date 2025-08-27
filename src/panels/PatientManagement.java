@@ -4,73 +4,108 @@
  */
 package panels;
 
+import controller.PatientTableQueryBuilder;
 import java.awt.event.ItemEvent;
 import model.MySQL;
 import java.sql.ResultSet;
 import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class PatientManagement extends javax.swing.JPanel {
 
     public PatientManagement() {
         initComponents();
-        loadInvoiceTable();
+        loadGenders();
+        loadPatientTable();
     }
 
-    public void loadInvoiceTable() {
+    private void loadGenders() {
         try {
-            String search = searchTextField.getText();
-            int sortBy = sortByComboBox.getSelectedIndex();
-
-            String sortByColumn = "";
-            String sortByType = "";
-
-            if (sortBy == 0) {
-                sortByColumn = "h.id";
-                sortByType = "ASC";
-            } else if (sortBy == 1) {
-                sortByColumn = "h.id";
-                sortByType = "DESC";
-            } else if (sortBy == 2) {
-                sortByColumn = "h.name";
-                sortByType = "ASC";
-            } else if (sortBy == 3) {
-                sortByColumn = "h.name";
-                sortByType = "DESC";
-            } else if (sortBy == 4) {
-                sortByColumn = "staff_count";
-                sortByType = "DESC";
-            } else if (sortBy == 5) {
-                sortByColumn = "staff_count";
-                sortByType = "ASC";
+            ResultSet result = MySQL.execute("SELECT * FROM `gender`");
+            Vector v = new Vector();
+            v.add("All");
+            while (result.next()) {
+                v.add(result.getString("gender"));
             }
-
-            DefaultTableModel model = (DefaultTableModel) invoiceTable.getModel();
-            model.setRowCount(0);
-            
-            ResultSet results = MySQL.execute("SELECT h.*, COUNT(s.nic) AS staff_count FROM hospital h "
-                    + "LEFT JOIN staff s ON h.id = s.hospital_id "
-                    + "WHERE h.id LIKE '%"+search+"%' OR h.name LIKE '%"+search+"%' "
-                    + "GROUP BY h.id "
-                    + "ORDER BY "+sortByColumn+" "+sortByType+" ");
-
-            while (results.next()) {
-                Vector v = new Vector();
-                v.add(results.getString("id"));
-                v.add(results.getString("name"));
-                v.add(results.getString("staff_count"));
-                
-                model.addRow(v);
-            }
+            DefaultComboBoxModel model = new DefaultComboBoxModel(v);
+            genderComboBox.setModel(model);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
+    public void loadPatientTable() {
+        try {
+            String search = searchTextField.getText();
+            int sortBy = sortByComboBox.getSelectedIndex();
+            String gender = genderComboBox.getSelectedItem().toString();
+
+            String sortByColumn = "";
+            String sortByType = "";
+
+            if (sortBy == 0) {
+                sortByColumn = "p.registered_date";
+                sortByType = "DESC";
+            } else if (sortBy == 1) {
+                sortByColumn = "p.registered_date";
+                sortByType = "ASC";
+            } else if (sortBy == 2) {
+                sortByColumn = "p.full_name";
+                sortByType = "ASC";
+            } else if (sortBy == 3) {
+                sortByColumn = "p.full_name";
+                sortByType = "DESC";
+            } else if (sortBy == 4) {
+                sortByColumn = "gender_name";
+                sortByType = "DESC";
+            } else if (sortBy == 5) {
+                sortByColumn = "gender_name";
+                sortByType = "ASC";
+            }
+
+
+            DefaultTableModel model = (DefaultTableModel) patientTable.getModel();
+            model.setRowCount(0);
+
+            ResultSet results = MySQL.execute(
+                    new PatientTableQueryBuilder()
+                            .search(search)
+                            .gender(gender)
+                            .order(sortByColumn, sortByType)
+                            .build()
+            );
+            
+            boolean hasResults = false;
+
+            while (results.next()) {
+                Vector v = new Vector();
+                v.add(results.getString("nic"));
+                v.add(results.getString("full_name"));
+                v.add(results.getString("age"));
+                v.add(results.getString("address"));
+                v.add(results.getString("gender_name"));
+                model.addRow(v);
+                hasResults = true;
+            }
+            
+            if(!hasResults){
+                 JOptionPane.showMessageDialog(null, "No Patients Found", "Warning", JOptionPane.WARNING_MESSAGE);
+                 clearSearch();
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+
     private void clearSearch() {
         searchTextField.setText("");
+        genderComboBox.setSelectedIndex(0);
         sortByComboBox.setSelectedIndex(0);
-        loadInvoiceTable();
+        loadPatientTable();
     }
 
     /**
@@ -88,6 +123,9 @@ public class PatientManagement extends javax.swing.JPanel {
         jLabel6 = new javax.swing.JLabel();
         searchTextField = new javax.swing.JTextField();
         newInvoiceButton1 = new javax.swing.JButton();
+        jPanel5 = new javax.swing.JPanel();
+        genderComboBox = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
         jPanel4 = new javax.swing.JPanel();
         sortByComboBox = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
@@ -97,7 +135,7 @@ public class PatientManagement extends javax.swing.JPanel {
         newInvoiceButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        invoiceTable = new javax.swing.JTable();
+        patientTable = new javax.swing.JTable();
 
         setMinimumSize(new java.awt.Dimension(852, 617));
         setPreferredSize(new java.awt.Dimension(852, 617));
@@ -144,7 +182,7 @@ public class PatientManagement extends javax.swing.JPanel {
                         .addComponent(jLabel6)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(searchTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                        .addComponent(searchTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(newInvoiceButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -163,9 +201,45 @@ public class PatientManagement extends javax.swing.JPanel {
 
         jPanel2.add(jPanel7);
 
+        jPanel5.setForeground(new java.awt.Color(255, 51, 51));
+
+        genderComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All", "Male", "Female" }));
+        genderComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                genderComboBoxItemStateChanged(evt);
+            }
+        });
+
+        jLabel7.setText("Gender");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(genderComboBox, 0, 156, Short.MAX_VALUE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(genderComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel2.add(jPanel5);
+
         jPanel4.setForeground(new java.awt.Color(255, 51, 51));
 
-        sortByComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hospital Id (Ascending) ", "Hospital Id (Descending)", "Hospital Name (A-Z)", "Hospital Name (Z-A)", "Number of Staff (High to Low)", "Number of Staff (Low to High)" }));
+        sortByComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Registered Date (Descending) ", "Registered Date (Ascending)", "Full Name Name (A-Z)", "Full Name Name (Z-A)", "Age (High to Low)", "Age (Low to High)" }));
         sortByComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 sortByComboBoxItemStateChanged(evt);
@@ -181,7 +255,7 @@ public class PatientManagement extends javax.swing.JPanel {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sortByComboBox, 0, 198, Short.MAX_VALUE)
+                    .addComponent(sortByComboBox, 0, 156, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -217,7 +291,7 @@ public class PatientManagement extends javax.swing.JPanel {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(clearSearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                .addComponent(clearSearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -233,7 +307,7 @@ public class PatientManagement extends javax.swing.JPanel {
         jPanel6.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 0, new java.awt.Color(204, 204, 204)));
         jPanel6.setForeground(new java.awt.Color(255, 51, 51));
 
-        newInvoiceButton.setText("New Invoice");
+        newInvoiceButton.setText("New Patient");
         newInvoiceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newInvoiceButtonActionPerformed(evt);
@@ -261,27 +335,27 @@ public class PatientManagement extends javax.swing.JPanel {
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        invoiceTable.setModel(new javax.swing.table.DefaultTableModel(
+        patientTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Hospital Id", "Hospital Name", "Number of Staff Members"
+                "NIC", "Full Name", "Age", "Address", "Gender"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        invoiceTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(invoiceTable);
-        if (invoiceTable.getColumnModel().getColumnCount() > 0) {
-            invoiceTable.getColumnModel().getColumn(1).setMinWidth(150);
-            invoiceTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+        patientTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(patientTable);
+        if (patientTable.getColumnModel().getColumnCount() > 0) {
+            patientTable.getColumnModel().getColumn(1).setMinWidth(150);
+            patientTable.getColumnModel().getColumn(1).setPreferredWidth(150);
         }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -331,7 +405,7 @@ public class PatientManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_clearSearchButtonActionPerformed
 
     private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
-        loadInvoiceTable();
+        loadPatientTable();
     }//GEN-LAST:event_searchTextFieldActionPerformed
 
     private void newInvoiceButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newInvoiceButton1ActionPerformed
@@ -339,7 +413,7 @@ public class PatientManagement extends javax.swing.JPanel {
 
     private void sortByComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_sortByComboBoxItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
-            loadInvoiceTable();
+            loadPatientTable();
         }
     }//GEN-LAST:event_sortByComboBoxItemStateChanged
 
@@ -349,25 +423,34 @@ public class PatientManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_newInvoiceButtonActionPerformed
 
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
-        loadInvoiceTable();
+        loadPatientTable();
     }//GEN-LAST:event_searchTextFieldKeyReleased
+
+    private void genderComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_genderComboBoxItemStateChanged
+       if (evt.getStateChange() == ItemEvent.SELECTED) {
+            loadPatientTable();
+        }
+    }//GEN-LAST:event_genderComboBoxItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearSearchButton;
-    private javax.swing.JTable invoiceTable;
+    private javax.swing.JComboBox<String> genderComboBox;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton newInvoiceButton;
     private javax.swing.JButton newInvoiceButton1;
+    private javax.swing.JTable patientTable;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JComboBox<String> sortByComboBox;
     // End of variables declaration//GEN-END:variables
