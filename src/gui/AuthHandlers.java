@@ -16,6 +16,28 @@ abstract class AuthHandler {
     public abstract boolean handle(String username, String password, String role);
 }
 
+class FieldValidationHandler extends AuthHandler {
+
+    @Override
+    public boolean handle(String username, String password, String role) {
+
+        System.out.println("Okkkk");
+        if (role.equals("Select")) {
+            JOptionPane.showMessageDialog(null, "Please Select your role", "Warning", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } else if (username.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please Enter your Username", "Warning", JOptionPane.WARNING_MESSAGE);
+            return false;
+        } else if (password.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Enter your Password", "Warning", JOptionPane.WARNING_MESSAGE);
+            return false;
+        }else{
+            return next == null || next.handle(username, password, role);
+        }
+        
+    }
+}
+
 class UsernameHandler extends AuthHandler {
 
     @Override

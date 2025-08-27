@@ -189,35 +189,22 @@ public class Signin extends javax.swing.JFrame {
         String password = String.valueOf(passwordPasswordField.getPassword());
         String role = roleComboBox.getSelectedItem().toString();
 
-        if (role.equals("Select")) {
-            JOptionPane.showMessageDialog(this, "Please Select your role", "Warning", JOptionPane.WARNING_MESSAGE);
-        } else if (username.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please Enter your Username", "Warning", JOptionPane.WARNING_MESSAGE);
+        AuthHandler fieldValidationHandler = new FieldValidationHandler();
+        AuthHandler userNameHandler = new UsernameHandler();
+        AuthHandler passwordHandler = new PasswordHandler();
+        AuthHandler roleHandler = new RoleHandler();
+        AuthHandler statusHandler = new StatusHandler();
 
-        } else if (password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Enter your Password", "Warning", JOptionPane.WARNING_MESSAGE);
+        fieldValidationHandler.setNext(userNameHandler);
+        userNameHandler.setNext(passwordHandler);
+        passwordHandler.setNext(roleHandler);
+        roleHandler.setNext(statusHandler);
 
-        } else {
-            System.out.println(username);
-            System.out.println(password);
-            System.out.println(role);
-
-            AuthHandler userNameHandler = new UsernameHandler();
-            AuthHandler passwordHandler = new PasswordHandler();
-            AuthHandler roleHandler = new RoleHandler();
-            AuthHandler statusHandler = new StatusHandler();
-
-            userNameHandler.setNext(passwordHandler);
-            passwordHandler.setNext(roleHandler);
-            roleHandler.setNext(statusHandler);
-
-            if (userNameHandler.handle(username, password, role)) {
-                Home home = new Home();
-                home.setVisible(true);
-                this.dispose();
-            }
+        if (fieldValidationHandler.handle(username, password, role)) {
+            Home home = new Home();
+            home.setVisible(true);
+            this.dispose();
         }
-
 
     }//GEN-LAST:event_jButton1ActionPerformed
 
