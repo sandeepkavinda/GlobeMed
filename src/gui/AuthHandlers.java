@@ -13,44 +13,43 @@ abstract class AuthHandler {
         this.next = next;
     }
 
-    public abstract boolean handle(String username, String password, String role);
+    public abstract boolean handle(String nic, String password, String role);
 }
 
 class FieldValidationHandler extends AuthHandler {
 
     @Override
-    public boolean handle(String username, String password, String role) {
+    public boolean handle(String nic, String password, String role) {
 
-        System.out.println("Okkkk");
         if (role.equals("Select")) {
             JOptionPane.showMessageDialog(null, "Please Select your role", "Warning", JOptionPane.WARNING_MESSAGE);
             return false;
-        } else if (username.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Please Enter your Username", "Warning", JOptionPane.WARNING_MESSAGE);
+        } else if (nic.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Please Enter your NIC", "Warning", JOptionPane.WARNING_MESSAGE);
             return false;
         } else if (password.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Enter your Password", "Warning", JOptionPane.WARNING_MESSAGE);
             return false;
         }else{
-            return next == null || next.handle(username, password, role);
+            return next == null || next.handle(nic, password, role);
         }
         
     }
 }
 
-class UsernameHandler extends AuthHandler {
+class NicHandler extends AuthHandler {
 
     @Override
-    public boolean handle(String username, String password, String role) {
+    public boolean handle(String nic, String password, String role) {
 
         try {
-            ResultSet resultSet = MySQL.execute("SELECT * FROM user WHERE username = '" + username + "'");
+            ResultSet resultSet = MySQL.execute("SELECT * FROM staff WHERE nic = '" + nic + "'");
 
             if (!resultSet.next()) {
-                JOptionPane.showMessageDialog(null, "Invalid Username", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Invalid NIC", "Warning", JOptionPane.WARNING_MESSAGE);
                 return false;
             }
-            return next == null || next.handle(username, password, role);
+            return next == null || next.handle(nic, password, role);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -63,15 +62,15 @@ class UsernameHandler extends AuthHandler {
 class PasswordHandler extends AuthHandler {
 
     @Override
-    public boolean handle(String username, String password, String role) {
+    public boolean handle(String nic, String password, String role) {
         try {
-            ResultSet resultSet = MySQL.execute("SELECT * FROM user WHERE username = '" + username + "' AND password='" + password + "'  ");
+            ResultSet resultSet = MySQL.execute("SELECT * FROM staff WHERE nic = '" + nic + "' AND password='" + password + "'  ");
 
             if (!resultSet.next()) {
                 JOptionPane.showMessageDialog(null, "Invalid Password!", "Warning", JOptionPane.WARNING_MESSAGE);
                 return false;
             }
-            return next == null || next.handle(username, password, role);
+            return next == null || next.handle(nic, password, role);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -84,18 +83,18 @@ class PasswordHandler extends AuthHandler {
 class RoleHandler extends AuthHandler {
 
     @Override
-    public boolean handle(String username, String password, String role) {
+    public boolean handle(String nic, String password, String role) {
         try {
-            ResultSet resultSet = MySQL.execute("SELECT * FROM user "
-                    + "INNER JOIN user_role ON user.user_role_id = user_role.id"
-                    + " WHERE username = '" + username + "' AND role='" + role + "'  ");
+            ResultSet resultSet = MySQL.execute("SELECT * FROM staff "
+                    + "INNER JOIN staff_role ON staff.staff_role_id = staff_role.id"
+                    + " WHERE nic = '" + nic + "' AND role='" + role + "'  ");
 
             if (!resultSet.next()) {
                 JOptionPane.showMessageDialog(null, "Invalid Role!", "Warning", JOptionPane.WARNING_MESSAGE);
                 return false;
             }
 
-            return next == null || next.handle(username, password, role);
+            return next == null || next.handle(nic, password, role);
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -108,11 +107,11 @@ class RoleHandler extends AuthHandler {
 class StatusHandler extends AuthHandler {
 
     @Override
-    public boolean handle(String username, String password, String role) {
+    public boolean handle(String nic, String password, String role) {
         try {
-            ResultSet resultSet = MySQL.execute("SELECT * FROM user "
-                    + "INNER JOIN user_status ON user.user_status_id = user_status.id"
-                    + " WHERE username = '" + username + "' AND status='Active'");
+            ResultSet resultSet = MySQL.execute("SELECT * FROM staff "
+                    + "INNER JOIN staff_status ON staff.staff_status_id = staff_status.id"
+                    + " WHERE nic = '" + nic + "' AND status='Active'");
 
             if (!resultSet.next()) {
                 JOptionPane.showMessageDialog(null, "Deactivated Account", "Warning", JOptionPane.WARNING_MESSAGE);

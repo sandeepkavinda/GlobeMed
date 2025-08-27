@@ -17,7 +17,7 @@ public class Signin extends javax.swing.JFrame {
 
     private void loadRoles() {
         try {
-            ResultSet resultSet = MySQL.execute("SELECT * FROM `user_role`");
+            ResultSet resultSet = MySQL.execute("SELECT * FROM `staff_role`");
             Vector v = new Vector();
             v.add("Select");
             while (resultSet.next()) {
@@ -38,7 +38,7 @@ public class Signin extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        userNameTextField = new javax.swing.JTextField();
+        nicTextField = new javax.swing.JTextField();
         jLabel3 = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         passwordPasswordField = new javax.swing.JPasswordField();
@@ -53,10 +53,10 @@ public class Signin extends javax.swing.JFrame {
         jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/logo-sm.png"))); // NOI18N
         jLabel1.setToolTipText("");
 
-        jLabel2.setText("Username");
+        jLabel2.setText("NIC Number");
 
-        userNameTextField.setText("sandeepkv");
-        userNameTextField.setPreferredSize(new java.awt.Dimension(233, 35));
+        nicTextField.setText("sandeepkv");
+        nicTextField.setPreferredSize(new java.awt.Dimension(233, 35));
 
         jLabel3.setText("Password");
 
@@ -88,7 +88,7 @@ public class Signin extends javax.swing.JFrame {
                         .addContainerGap()
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 234, Short.MAX_VALUE)
-                            .addComponent(userNameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(nicTextField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(passwordPasswordField, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addGroup(jPanel2Layout.createSequentialGroup()
                                 .addComponent(jLabel3)
@@ -121,7 +121,7 @@ public class Signin extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel2)
                 .addGap(0, 0, 0)
-                .addComponent(userNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(nicTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel3)
                 .addGap(0, 0, 0)
@@ -185,22 +185,22 @@ public class Signin extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
 
-        String username = userNameTextField.getText();
+        String nic = nicTextField.getText();
         String password = String.valueOf(passwordPasswordField.getPassword());
         String role = roleComboBox.getSelectedItem().toString();
 
         AuthHandler fieldValidationHandler = new FieldValidationHandler();
-        AuthHandler userNameHandler = new UsernameHandler();
+        AuthHandler nicHandler = new NicHandler();
         AuthHandler passwordHandler = new PasswordHandler();
         AuthHandler roleHandler = new RoleHandler();
         AuthHandler statusHandler = new StatusHandler();
 
-        fieldValidationHandler.setNext(userNameHandler);
-        userNameHandler.setNext(passwordHandler);
+        fieldValidationHandler.setNext(nicHandler);
+        nicHandler.setNext(passwordHandler);
         passwordHandler.setNext(roleHandler);
         roleHandler.setNext(statusHandler);
 
-        if (fieldValidationHandler.handle(username, password, role)) {
+        if (fieldValidationHandler.handle(nic, password, role)) {
             Home home = new Home();
             home.setVisible(true);
             this.dispose();
@@ -233,8 +233,8 @@ public class Signin extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
+    private javax.swing.JTextField nicTextField;
     private javax.swing.JPasswordField passwordPasswordField;
     private javax.swing.JComboBox<String> roleComboBox;
-    private javax.swing.JTextField userNameTextField;
     // End of variables declaration//GEN-END:variables
 }
