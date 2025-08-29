@@ -29,11 +29,11 @@ public class Home extends javax.swing.JFrame {
     Color primaryColor = Color.decode("#00694B");
 
     public Home() {
-        //this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resource/icon.png")));
+        this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icon.png")));
         initComponents();
         showMenu();
-        loadPanel(new Dashboard(), dashboardButton, dashboardActiveBar);
-        //loadPanel(new InvoiceManagement(), invoiceManagementButton, invoiceManagementActiveBar);
+        //loadPanel(new Dashboard(), dashboardButton, dashboardActiveBar);
+        loadPanel(new AppointmentManagement(this), appointmentManagementButton, appointmentManagementActiveBar);
     }
 
     private void loadPanel(JPanel panel, JButton selectedButton, JPanel selectActiveBar) {
@@ -762,7 +762,7 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_patientManagementButtonActionPerformed
 
     private void appointmentManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appointmentManagementButtonActionPerformed
-        loadPanel(new AppointmentManagement(), appointmentManagementButton, appointmentManagementActiveBar);
+        loadPanel(new AppointmentManagement(this), appointmentManagementButton, appointmentManagementActiveBar);
     }//GEN-LAST:event_appointmentManagementButtonActionPerformed
 
     private void billingManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_billingManagementButtonActionPerformed
