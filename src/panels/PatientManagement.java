@@ -45,31 +45,8 @@ public class PatientManagement extends javax.swing.JPanel {
     public void loadPatientTable() {
         try {
             String search = searchTextField.getText();
-            int sortBy = sortByComboBox.getSelectedIndex();
+            int sortBySelectedIndex = sortByComboBox.getSelectedIndex();
             String gender = genderComboBox.getSelectedItem().toString();
-
-            String sortByColumn = "";
-            String sortByType = "";
-
-            if (sortBy == 0) {
-                sortByColumn = "p.registered_date";
-                sortByType = "DESC";
-            } else if (sortBy == 1) {
-                sortByColumn = "p.registered_date";
-                sortByType = "ASC";
-            } else if (sortBy == 2) {
-                sortByColumn = "p.full_name";
-                sortByType = "ASC";
-            } else if (sortBy == 3) {
-                sortByColumn = "p.full_name";
-                sortByType = "DESC";
-            } else if (sortBy == 4) {
-                sortByColumn = "age";
-                sortByType = "DESC";
-            } else if (sortBy == 5) {
-                sortByColumn = "age";
-                sortByType = "ASC";
-            }
 
             DefaultTableModel model = (DefaultTableModel) patientTable.getModel();
             model.setRowCount(0);
@@ -78,7 +55,7 @@ public class PatientManagement extends javax.swing.JPanel {
                     new PatientTableQueryBuilder()
                             .search(search)
                             .gender(gender)
-                            .order(sortByColumn, sortByType)
+                            .order(sortBySelectedIndex)
                             .build()
             );
 
@@ -430,7 +407,7 @@ public class PatientManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_genderComboBoxItemStateChanged
 
     private void patientTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_patientTableMouseClicked
-         if (evt.getClickCount() == 2) {
+        if (evt.getClickCount() == 2) {
             int selectedRow = patientTable.getSelectedRow();
             if (selectedRow != -1) {
                 String patientNic = String.valueOf(patientTable.getValueAt(selectedRow, 0));

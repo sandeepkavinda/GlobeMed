@@ -11,7 +11,7 @@ public class PatientTableQueryBuilder {
 
     public PatientTableQueryBuilder search(String search) {
         if (search != null && !search.isEmpty()) {
-            where += "AND (p.full_name LIKE '%" + search + "%' OR p.address LIKE '%" + search + "%') ";
+            where += "AND (p.full_name LIKE '%" + search + "%' OR p.address LIKE '%" + search + "%' OR p.nic LIKE '" + search + "%') ";
         }
         return this;
     }
@@ -23,8 +23,31 @@ public class PatientTableQueryBuilder {
         return this;
     }
 
-    public PatientTableQueryBuilder order(String column, String type) {
-        orderBy = "ORDER BY " + column + " " + type;
+    public PatientTableQueryBuilder order(int sortBySelectedIndex) {
+        String sortByColumn = "";
+        String sortByType = "";
+
+        if (sortBySelectedIndex == 0) {
+            sortByColumn = "p.registered_date";
+            sortByType = "DESC";
+        } else if (sortBySelectedIndex == 1) {
+            sortByColumn = "p.registered_date";
+            sortByType = "ASC";
+        } else if (sortBySelectedIndex == 2) {
+            sortByColumn = "p.full_name";
+            sortByType = "ASC";
+        } else if (sortBySelectedIndex == 3) {
+            sortByColumn = "p.full_name";
+            sortByType = "DESC";
+        } else if (sortBySelectedIndex == 4) {
+            sortByColumn = "age";
+            sortByType = "DESC";
+        } else if (sortBySelectedIndex == 5) {
+            sortByColumn = "age";
+            sortByType = "ASC";
+        }
+
+        orderBy = "ORDER BY " + sortByColumn + " " + sortByType;
         return this;
     }
 
