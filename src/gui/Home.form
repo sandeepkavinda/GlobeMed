@@ -310,9 +310,9 @@
                           <Component id="jLabel2" min="-2" max="-2" attributes="0"/>
                           <EmptySpace type="unrelated" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="jLabel3" pref="129" max="32767" attributes="0"/>
+                              <Component id="loggedUserNamejLabel" pref="129" max="32767" attributes="0"/>
                               <Group type="102" attributes="0">
-                                  <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                                  <Component id="loggedUserRolejLabel" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                               </Group>
                           </Group>
@@ -327,9 +327,9 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Group type="102" attributes="0">
                                   <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
-                                  <Component id="jLabel3" min="-2" max="-2" attributes="0"/>
+                                  <Component id="loggedUserNamejLabel" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                                  <Component id="jLabel5" min="-2" max="-2" attributes="0"/>
+                                  <Component id="loggedUserRolejLabel" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="8" max="32767" attributes="0"/>
                               </Group>
                               <Component id="jLabel2" max="32767" attributes="0"/>
@@ -347,7 +347,7 @@
                     </Property>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel3">
+                <Component class="javax.swing.JLabel" name="loggedUserNamejLabel">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Poppins" size="10" style="1"/>
@@ -355,7 +355,7 @@
                     <Property name="text" type="java.lang.String" value="Sandeep Kavinda"/>
                   </Properties>
                 </Component>
-                <Component class="javax.swing.JLabel" name="jLabel5">
+                <Component class="javax.swing.JLabel" name="loggedUserRolejLabel">
                   <Properties>
                     <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                       <Font name="Segoe UI" size="10" style="0"/>
@@ -453,7 +453,7 @@
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                                   <Component id="reportsManagementButton" min="-2" pref="234" max="-2" attributes="0"/>
                               </Group>
-                              <Group type="102" alignment="0" attributes="0">
+                              <Group type="102" alignment="1" attributes="0">
                                   <Component id="hospitalManagementActiveBar" min="-2" max="-2" attributes="0"/>
                                   <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                                   <Component id="hospitalManagementButton" min="-2" pref="234" max="-2" attributes="0"/>
@@ -472,11 +472,6 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="dashboardActiveBar" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="dashboardButton" min="-2" max="-2" attributes="0"/>
-                          </Group>
-                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="hospitalManagementActiveBar" alignment="0" min="-2" max="-2" attributes="0"/>
-                              <Component id="hospitalManagementButton" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
                           <Group type="103" groupAlignment="0" attributes="0">
@@ -502,6 +497,11 @@
                           <Group type="103" groupAlignment="0" attributes="0">
                               <Component id="reportManagementActiveBar" alignment="0" min="-2" max="-2" attributes="0"/>
                               <Component id="reportsManagementButton" min="-2" max="-2" attributes="0"/>
+                          </Group>
+                          <EmptySpace min="0" pref="0" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" attributes="0">
+                              <Component id="hospitalManagementActiveBar" alignment="0" min="-2" max="-2" attributes="0"/>
+                              <Component id="hospitalManagementButton" alignment="0" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace max="32767" attributes="0"/>
                       </Group>
@@ -830,7 +830,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/resources/appointment.png"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Appointment Management"/>
+                    <Property name="text" type="java.lang.String" value="Appoint. Management"/>
                     <Property name="toolTipText" type="java.lang.String" value="Invoice Management"/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
@@ -886,7 +886,7 @@
                     <Property name="icon" type="javax.swing.Icon" editor="org.netbeans.modules.form.editors2.IconEditor">
                       <Image iconType="3" name="/resources/report.png"/>
                     </Property>
-                    <Property name="text" type="java.lang.String" value="Reports"/>
+                    <Property name="text" type="java.lang.String" value="Report Managements"/>
                     <Property name="toolTipText" type="java.lang.String" value="Quatations"/>
                     <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                       <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">

@@ -4,11 +4,13 @@ import com.formdev.flatlaf.FlatLightLaf;
 import java.sql.ResultSet;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import model.UserBean;
 import model.MySQL;
 
 public class Signin extends javax.swing.JFrame {
+
+    public static UserBean userBean = new UserBean();
 
     public Signin() {
         initComponents();
@@ -204,6 +206,9 @@ public class Signin extends javax.swing.JFrame {
             Home home = new Home();
             home.setVisible(true);
             this.dispose();
+            
+        } else {
+            userBean = null;
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed

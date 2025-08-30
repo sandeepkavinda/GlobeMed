@@ -13,7 +13,6 @@ import model.MySQL;
 import java.sql.ResultSet;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class PatientManagement extends javax.swing.JPanel {

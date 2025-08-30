@@ -16,7 +16,6 @@ import panels.ReportsManagement;
 import panels.ServiceManagement;
 import panels.StaffManagement;
 
-
 public class Home extends javax.swing.JFrame {
 
     int maxMenuSize = 200;
@@ -32,8 +31,10 @@ public class Home extends javax.swing.JFrame {
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icon.png")));
         initComponents();
         showMenu();
-        //loadPanel(new Dashboard(), dashboardButton, dashboardActiveBar);
-        loadPanel(new ReportsManagement(this), reportsManagementButton, reportManagementActiveBar);
+        loadPanel(new Dashboard(), dashboardButton, dashboardActiveBar);
+        loggedUserNamejLabel.setText(Signin.userBean.getFirstName() + " " + Signin.userBean.getLastName());
+        loggedUserRolejLabel.setText(Signin.userBean.getStaffRole());
+
     }
 
     private void loadPanel(JPanel panel, JButton selectedButton, JPanel selectActiveBar) {
@@ -151,8 +152,8 @@ public class Home extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
-        jLabel5 = new javax.swing.JLabel();
+        loggedUserNamejLabel = new javax.swing.JLabel();
+        loggedUserRolejLabel = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         MainPanel = new javax.swing.JPanel();
         NavigationPanel = new javax.swing.JPanel();
@@ -291,11 +292,11 @@ public class Home extends javax.swing.JFrame {
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/profile.png"))); // NOI18N
 
-        jLabel3.setFont(new java.awt.Font("Poppins", 1, 10)); // NOI18N
-        jLabel3.setText("Sandeep Kavinda");
+        loggedUserNamejLabel.setFont(new java.awt.Font("Poppins", 1, 10)); // NOI18N
+        loggedUserNamejLabel.setText("Sandeep Kavinda");
 
-        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
-        jLabel5.setText("Doctor");
+        loggedUserRolejLabel.setFont(new java.awt.Font("Segoe UI", 0, 10)); // NOI18N
+        loggedUserRolejLabel.setText("Doctor");
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -306,9 +307,9 @@ public class Home extends javax.swing.JFrame {
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+                    .addComponent(loggedUserNamejLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(jLabel5)
+                        .addComponent(loggedUserRolejLabel)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -319,9 +320,9 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel7Layout.createSequentialGroup()
                         .addGap(6, 6, 6)
-                        .addComponent(jLabel3)
+                        .addComponent(loggedUserNamejLabel)
                         .addGap(0, 0, 0)
-                        .addComponent(jLabel5)
+                        .addComponent(loggedUserRolejLabel)
                         .addGap(0, 8, Short.MAX_VALUE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(9, 9, 9))
@@ -535,7 +536,7 @@ public class Home extends javax.swing.JFrame {
         appointmentManagementButton.setBackground(new java.awt.Color(255, 255, 255));
         appointmentManagementButton.setForeground(new java.awt.Color(51, 51, 51));
         appointmentManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/appointment.png"))); // NOI18N
-        appointmentManagementButton.setText("Appointment Management");
+        appointmentManagementButton.setText("Appoint. Management");
         appointmentManagementButton.setToolTipText("Invoice Management");
         appointmentManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
         appointmentManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -565,7 +566,7 @@ public class Home extends javax.swing.JFrame {
         reportsManagementButton.setBackground(new java.awt.Color(255, 255, 255));
         reportsManagementButton.setForeground(new java.awt.Color(51, 51, 51));
         reportsManagementButton.setIcon(new javax.swing.ImageIcon(getClass().getResource("/resources/report.png"))); // NOI18N
-        reportsManagementButton.setText("Reports");
+        reportsManagementButton.setText("Report Managements");
         reportsManagementButton.setToolTipText("Quatations");
         reportsManagementButton.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 10, 0, 0));
         reportsManagementButton.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
@@ -645,7 +646,7 @@ public class Home extends javax.swing.JFrame {
                         .addComponent(reportManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
                         .addComponent(reportsManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(NavigationPanelLayout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, NavigationPanelLayout.createSequentialGroup()
                         .addComponent(hospitalManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, 0)
                         .addComponent(hospitalManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, 234, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -660,10 +661,6 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(NavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(dashboardActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(dashboardButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(0, 0, 0)
-                .addGroup(NavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(hospitalManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(hospitalManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(0, 0, 0)
                 .addGroup(NavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(staffManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -683,6 +680,10 @@ public class Home extends javax.swing.JFrame {
                 .addGroup(NavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(reportManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(reportsManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(0, 0, 0)
+                .addGroup(NavigationPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(hospitalManagementActiveBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(hospitalManagementButton, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -795,7 +796,7 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void hospitalManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hospitalManagementButtonActionPerformed
-       loadPanel(new HospitaManagement(), hospitalManagementButton, hospitalManagementActiveBar);
+        loadPanel(new HospitaManagement(), hospitalManagementButton, hospitalManagementActiveBar);
     }//GEN-LAST:event_hospitalManagementButtonActionPerformed
 
     private void reportsManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportsManagementButtonActionPerformed
@@ -859,8 +860,6 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JButton jButton4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
-    private javax.swing.JLabel jLabel5;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
@@ -871,6 +870,8 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JSeparator jSeparator2;
+    private javax.swing.JLabel loggedUserNamejLabel;
+    private javax.swing.JLabel loggedUserRolejLabel;
     private javax.swing.JButton menuChangeButton;
     private javax.swing.JButton notoficationsButton;
     private javax.swing.JPanel patientManagementActiveBar;

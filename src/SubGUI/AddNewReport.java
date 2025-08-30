@@ -67,6 +67,12 @@ public class AddNewReport extends javax.swing.JDialog {
         itemTitleTextField.setText("");
         itemResultTextField.setText("");
         specialNotesTextArea.setText("");
+        fullNameTextField.setText("");
+                fullNameTextField.setText("");
+        ageTextField.setText("");
+        genderTextField.setText("");
+        dobTextField.setText("");
+
 
         //Reset Table
         DefaultTableModel model = (DefaultTableModel) reportItemsTable.getModel();
@@ -137,7 +143,8 @@ public class AddNewReport extends javax.swing.JDialog {
                             + "VALUES ('" + title + "','" + value + "','" + reportId + "')");
                 }
                 reportsManagement.loadReportTable();
-                JOptionPane.showMessageDialog(this, "Report Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/resource/success.png")));
+                resetAll();
+                JOptionPane.showMessageDialog(this, "Report Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/resources/success.png")));
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
                 e.printStackTrace();

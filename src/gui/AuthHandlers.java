@@ -30,10 +30,10 @@ class FieldValidationHandler extends AuthHandler {
         } else if (password.isEmpty()) {
             JOptionPane.showMessageDialog(null, "Enter your Password", "Warning", JOptionPane.WARNING_MESSAGE);
             return false;
-        }else{
+        } else {
             return next == null || next.handle(nic, password, role);
         }
-        
+
     }
 }
 
@@ -94,6 +94,7 @@ class RoleHandler extends AuthHandler {
                 return false;
             }
 
+            Signin.userBean.setStaffRole(resultSet.getString("role"));
             return next == null || next.handle(nic, password, role);
 
         } catch (Exception e) {
@@ -118,6 +119,13 @@ class StatusHandler extends AuthHandler {
                 return false;
             }
             System.out.println("Authentication Successful! Welcome");
+            Signin.userBean.setNic(resultSet.getString("nic"));
+            Signin.userBean.setFirstName(resultSet.getString("first_name"));
+            Signin.userBean.setLastName(resultSet.getString("last_name"));
+            Signin.userBean.setHospitalId(resultSet.getString("last_name"));
+            Signin.userBean.setHospitalId(resultSet.getString("hospital_id"));
+            
+
             return true;
 
         } catch (Exception e) {
