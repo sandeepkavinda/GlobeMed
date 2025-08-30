@@ -183,7 +183,7 @@ public class AddNewPatient extends javax.swing.JDialog {
         userTable = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Add New User");
+        setTitle("Add New Patient");
         setMinimumSize(new java.awt.Dimension(700, 500));
         setResizable(false);
 

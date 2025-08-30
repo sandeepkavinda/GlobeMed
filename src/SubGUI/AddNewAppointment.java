@@ -431,7 +431,7 @@ public class AddNewAppointment extends javax.swing.JDialog {
         openDobCalButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Add New User");
+        setTitle("Add New Appointment");
         setMinimumSize(new java.awt.Dimension(700, 500));
         setResizable(false);
 

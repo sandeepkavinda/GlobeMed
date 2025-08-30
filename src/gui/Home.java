@@ -766,7 +766,7 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_appointmentManagementButtonActionPerformed
 
     private void billingManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_billingManagementButtonActionPerformed
-        loadPanel(new BillingManagement(), billingManagementButton, billingManagementActiveBar);
+        loadPanel(new BillingManagement(this), billingManagementButton, billingManagementActiveBar);
     }//GEN-LAST:event_billingManagementButtonActionPerformed
 
     private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
