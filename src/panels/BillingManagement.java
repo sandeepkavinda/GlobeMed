@@ -4,62 +4,49 @@
  */
 package panels;
 
+import SubGUI.NewBill;
+import controller.BillingTableQueryBuilder;
+import gui.Home;
 import java.awt.event.ItemEvent;
 import model.MySQL;
 import java.sql.ResultSet;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
+import model.CurrencyFormatter;
 
 public class BillingManagement extends javax.swing.JPanel {
 
-    public BillingManagement() {
+    private Home home;
+    
+    public BillingManagement(Home home) {
+        this.home =home;
         initComponents();
-        loadInvoiceTable();
+        loadBillingTable();
     }
 
-    public void loadInvoiceTable() {
+    public void loadBillingTable() {
         try {
             String search = searchTextField.getText();
             int sortBy = sortByComboBox.getSelectedIndex();
 
-            String sortByColumn = "";
-            String sortByType = "";
-
-            if (sortBy == 0) {
-                sortByColumn = "h.id";
-                sortByType = "ASC";
-            } else if (sortBy == 1) {
-                sortByColumn = "h.id";
-                sortByType = "DESC";
-            } else if (sortBy == 2) {
-                sortByColumn = "h.name";
-                sortByType = "ASC";
-            } else if (sortBy == 3) {
-                sortByColumn = "h.name";
-                sortByType = "DESC";
-            } else if (sortBy == 4) {
-                sortByColumn = "staff_count";
-                sortByType = "DESC";
-            } else if (sortBy == 5) {
-                sortByColumn = "staff_count";
-                sortByType = "ASC";
-            }
-
             DefaultTableModel model = (DefaultTableModel) invoiceTable.getModel();
             model.setRowCount(0);
-            
-            ResultSet results = MySQL.execute("SELECT h.*, COUNT(s.nic) AS staff_count FROM hospital h "
-                    + "LEFT JOIN staff s ON h.id = s.hospital_id "
-                    + "WHERE h.id LIKE '%"+search+"%' OR h.name LIKE '%"+search+"%' "
-                    + "GROUP BY h.id "
-                    + "ORDER BY "+sortByColumn+" "+sortByType+" ");
+
+            ResultSet results = MySQL.execute(
+                    new BillingTableQueryBuilder()
+                            .search(search)
+                            .order(sortBy)
+                            .build()
+            );
 
             while (results.next()) {
                 Vector v = new Vector();
-                v.add(results.getString("id"));
-                v.add(results.getString("name"));
-                v.add(results.getString("staff_count"));
-                
+                v.add(results.getString("b.id"));
+                v.add(results.getString("b.date_time"));
+                v.add(results.getString("a.id"));
+                v.add(results.getString("s.id"));
+                v.add(CurrencyFormatter.formatCurrency(results.getDouble("s.price")));
+                v.add(results.getString("p.method"));
                 model.addRow(v);
             }
         } catch (Exception e) {
@@ -70,7 +57,7 @@ public class BillingManagement extends javax.swing.JPanel {
     private void clearSearch() {
         searchTextField.setText("");
         sortByComboBox.setSelectedIndex(0);
-        loadInvoiceTable();
+        loadBillingTable();
     }
 
     /**
@@ -165,7 +152,7 @@ public class BillingManagement extends javax.swing.JPanel {
 
         jPanel4.setForeground(new java.awt.Color(255, 51, 51));
 
-        sortByComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hospital Id (Ascending) ", "Hospital Id (Descending)", "Hospital Name (A-Z)", "Hospital Name (Z-A)", "Number of Staff (High to Low)", "Number of Staff (Low to High)" }));
+        sortByComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Latest Bills First", "Oldest Bills First" }));
         sortByComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 sortByComboBoxItemStateChanged(evt);
@@ -233,7 +220,7 @@ public class BillingManagement extends javax.swing.JPanel {
         jPanel6.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 0, new java.awt.Color(204, 204, 204)));
         jPanel6.setForeground(new java.awt.Color(255, 51, 51));
 
-        newInvoiceButton.setText("New Invoice");
+        newInvoiceButton.setText("New Bill");
         newInvoiceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 newInvoiceButtonActionPerformed(evt);
@@ -266,11 +253,11 @@ public class BillingManagement extends javax.swing.JPanel {
 
             },
             new String [] {
-                "Hospital Id", "Hospital Name", "Number of Staff Members"
+                "Billing Id", "Billing Date Time", "Appointment Id", "Service Id", "Amount", "Payment Method"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -331,7 +318,7 @@ public class BillingManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_clearSearchButtonActionPerformed
 
     private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
-        loadInvoiceTable();
+        loadBillingTable();
     }//GEN-LAST:event_searchTextFieldActionPerformed
 
     private void newInvoiceButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newInvoiceButton1ActionPerformed
@@ -339,17 +326,17 @@ public class BillingManagement extends javax.swing.JPanel {
 
     private void sortByComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_sortByComboBoxItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
-            loadInvoiceTable();
+            loadBillingTable();
         }
     }//GEN-LAST:event_sortByComboBoxItemStateChanged
 
     private void newInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newInvoiceButtonActionPerformed
-//        NewInvoice newInvoice = new NewInvoice(this);
-//        newInvoice.setVisible(true);
+        NewBill newBill = new NewBill(home,true,this);
+        newBill.setVisible(true);
     }//GEN-LAST:event_newInvoiceButtonActionPerformed
 
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
-        loadInvoiceTable();
+        loadBillingTable();
     }//GEN-LAST:event_searchTextFieldKeyReleased
 
 
