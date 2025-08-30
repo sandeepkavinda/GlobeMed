@@ -33,7 +33,7 @@ public class Home extends javax.swing.JFrame {
         initComponents();
         showMenu();
         //loadPanel(new Dashboard(), dashboardButton, dashboardActiveBar);
-        loadPanel(new AppointmentManagement(this), appointmentManagementButton, appointmentManagementActiveBar);
+        loadPanel(new ReportsManagement(this), reportsManagementButton, reportManagementActiveBar);
     }
 
     private void loadPanel(JPanel panel, JButton selectedButton, JPanel selectActiveBar) {
@@ -799,7 +799,7 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_hospitalManagementButtonActionPerformed
 
     private void reportsManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportsManagementButtonActionPerformed
-        loadPanel(new ReportsManagement(), reportsManagementButton, reportManagementActiveBar);
+        loadPanel(new ReportsManagement(this), reportsManagementButton, reportManagementActiveBar);
     }//GEN-LAST:event_reportsManagementButtonActionPerformed
 
     /**

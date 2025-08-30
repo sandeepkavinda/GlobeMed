@@ -20,3 +20,11 @@ INSERT INTO `gender` (`id`, `gender`) VALUES (2, 'Female');
 INSERT INTO `payment_method` (`id`, `method`) VALUES (1, 'Cash');
 INSERT INTO `payment_method` (`id`, `method`) VALUES (2, 'Card');
 INSERT INTO `payment_method` (`id`, `method`) VALUES (3, 'Insurance Claim');
+
+INSERT INTO `report_type` (`id`, `type`) VALUES (1, 'Patient Medical Summery');
+INSERT INTO `report_type` (`id`, `type`) VALUES (2, 'Diagnostic Results');
+INSERT INTO `report_type` (`id`, `type`) VALUES (3, 'Financial Report');
+
+INSERT INTO `service_type` (`id`, `type`) VALUES (1, 'Consultations');
+INSERT INTO `service_type` (`id`, `type`) VALUES (2, 'Diagnostics Test');
+INSERT INTO `service_type` (`id`, `type`) VALUES (3, 'Surgeries');

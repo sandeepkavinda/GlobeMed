@@ -200,64 +200,7 @@ public class NewBill extends javax.swing.JDialog {
             e.printStackTrace();
         }
 
-        String fullName = patientNicTextField.getText();
-        String dateOfBirth = patientNameTextFieldTextField.getText();
-        String gender = paymentMethodComboBox.getSelectedItem().toString();
-
-//        if (nic.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Please Enter Patient's NIC Number", "Warning", JOptionPane.WARNING_MESSAGE);
-//            appointmentIdTextField.grabFocus();
-//        } else if (nic.length() > 12) {
-//            JOptionPane.showMessageDialog(this, "Invalid NIC Number", "Warning", JOptionPane.WARNING_MESSAGE);
-//            appointmentIdTextField.grabFocus();
-//            appointmentIdTextField.selectAll();
-//        } else if (fullName.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Please Enter Full Name", "Warning", JOptionPane.WARNING_MESSAGE);
-//            patientNicTextField.grabFocus();
-//        } else if (fullName.length() > 150) {
-//            JOptionPane.showMessageDialog(this, "The Full Name must contain fewer than 150 characters.", "Warning", JOptionPane.WARNING_MESSAGE);
-//            patientNicTextField.grabFocus();
-//            patientNicTextField.selectAll();
-//        } else if (dateOfBirth.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Please Select Patient's Date of Birth", "Warning", JOptionPane.WARNING_MESSAGE);
-//            patientNameTextFieldTextField.grabFocus();
-//        } else if (gender.equals("Select")) {
-//            JOptionPane.showMessageDialog(this, "Please Select Patient's Gender", "Warning", JOptionPane.WARNING_MESSAGE);
-//            patientNameTextFieldTextField.grabFocus();
-//            patientNameTextFieldTextField.selectAll();
-//        } else {
-//
-//            try {
-//                ResultSet resultset = MySQL.execute("SELECT * FROM `patient` WHERE `nic`='" + nic + "'");
-//                if (resultset.next()) {
-//                    JOptionPane.showMessageDialog(this, '"' + "NIC Already Registered", "Warning", JOptionPane.WARNING_MESSAGE);
-//                    appointmentIdTextField.grabFocus();
-//                    appointmentIdTextField.selectAll();
-//                } else {
-//                    Date date = new Date();
-//                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//                    String currentDateTime = format.format(date);
-//
-//                    ResultSet genderResultSet = MySQL.execute("SELECT * FROM `gender` WHERE `gender`='" + gender + "'");
-//
-//                    if (genderResultSet.next()) {
-//                        String genderId = genderResultSet.getString("id");
-//                        MySQL.execute("INSERT INTO `patient` (`nic`,`full_name`,`date_of_birth`,`gender_id`,address,`registered_date`) "
-//                                + "VALUES ('" + nic + "','" + fullName + "','" + dateOfBirth + "','" + genderId + "','"+address+"','" + currentDateTime + "')");
-//                        JOptionPane.showMessageDialog(this, "Patiemt Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/resources/success.png")));
-//                        loadPatientTable();
-//                        resetFields();
-//                        patientManagement.loadPatientTable();
-//                    }else{
-//                        JOptionPane.showMessageDialog(this, "Something Went Wrong. Try Again", "Warning", JOptionPane.WARNING_MESSAGE);
-//                    }
-//                }
-//            } catch (Exception e) {
-//                JOptionPane.showMessageDialog(this, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//                e.printStackTrace();
-//            }
-//
-//        }
+       
     }
 
     @SuppressWarnings("unchecked")
