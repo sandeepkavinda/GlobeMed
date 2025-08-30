@@ -158,22 +158,9 @@ public class AddNewReport extends javax.swing.JDialog {
     private void generatePatientMedicalhistory() {
         String patientNic = quickPatientNicTextField.getText();
         if (patientNic.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please enter Patient's NIC for Generate Patient Medical Report", "Warning", JOptionPane.WARNING_MESSAGE);
+            JOptionPane.showMessageDialog(this, "Please enter Patient NIC Number", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
-            try {
-                ResultSet resultSet = MySQL.execute("SELECT * FROM patient "
-                        + "WHERE nic = '" + patientNic + "'");
-
-                if (resultSet.next()) {
-                    //ss
-                } else {
-                    JOptionPane.showMessageDialog(this, "Invalid Patient NIC", "Warning", JOptionPane.WARNING_MESSAGE);
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
+            new PatientMedicalReport(patientNic, this);
         }
     }
 
@@ -893,7 +880,7 @@ public class AddNewReport extends javax.swing.JDialog {
     }//GEN-LAST:event_newInvoiceButtonActionPerformed
 
     private void newInvoiceButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newInvoiceButton1ActionPerformed
-        // TODO add your handling code here:
+        new FinancialReport(this);
     }//GEN-LAST:event_newInvoiceButton1ActionPerformed
 
     private void newInvoiceButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newInvoiceButton2ActionPerformed

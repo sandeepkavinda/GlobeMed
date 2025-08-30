@@ -14,14 +14,14 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 public class PatientMedicalReport extends javax.swing.JFrame {
 
-    private String reportId;
+    private String patientNic;
     private AddNewReport addNewReport;
 
-    public PatientMedicalReport(String reportId, AddNewReport addNewReport) {
-        this.reportId = reportId;
+    public PatientMedicalReport(String patientNic, AddNewReport addNewReport) {
+        this.patientNic = patientNic;
         this.addNewReport = addNewReport;
 
-        if (checkReportId()) {
+        if (checkPatientId()) {
             initComponents();
             addNewReport.setVisible(false);
             loadReportData();
@@ -31,15 +31,15 @@ public class PatientMedicalReport extends javax.swing.JFrame {
 
     }
 
-    private boolean checkReportId() {
+    private boolean checkPatientId() {
         try {
-            ResultSet resultSet = MySQL.execute("SELECT * FROM report "
-                    + "WHERE id = '" + reportId + "'");
+            ResultSet resultSet = MySQL.execute("SELECT * FROM patient "
+                    + "WHERE nic = '" + patientNic + "'");
 
             if (resultSet.next()) {
                 return true;
             } else {
-                JOptionPane.showMessageDialog(addNewReport, "Invalid Report Id", "Warning", JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(addNewReport, "Invalid Patient Id", "Warning", JOptionPane.WARNING_MESSAGE);
             }
 
         } catch (Exception e) {
@@ -52,10 +52,9 @@ public class PatientMedicalReport extends javax.swing.JFrame {
         try {
             ResultSet resultSet = MySQL.execute("SELECT *, "
                     + "TIMESTAMPDIFF(YEAR, p.date_of_birth, CURDATE()) AS age "
-                    + "FROM report r "
-                    + "INNER JOIN patient p ON r.patient_nic = p.nic "
+                    + "FROM patient p "
                     + "INNER JOIN gender g ON p.gender_id = g.id "
-                    + "WHERE r.id = '" + reportId + "'");
+                    + "WHERE p.nic = '" + patientNic + "'");
 
             if (resultSet.next()) {
                 Date date = new Date();
@@ -66,20 +65,23 @@ public class PatientMedicalReport extends javax.swing.JFrame {
                 ageLabel.setText(":   " + resultSet.getString("age") + " Years");
                 genderLabel.setText(":   " + resultSet.getString("g.gender"));
                 dateLabel.setText(":   " + currentDateTime);
-                reportIdTextLabel.setText(resultSet.getString("r.id"));
 
-                ResultSet reportRs = MySQL.execute("SELECT * FROM report_item "
-                        + "WHERE report_id = '" + reportId + "'");
+                ResultSet medicalHistoryRs = MySQL.execute("SELECT * "
+                        + "FROM medical_history m "
+                        + "INNER JOIN treatment_plans t ON m.id = t.medical_history_id "
+                        + "WHERE m.patient_nic = '" + patientNic + "'");
 
                 DefaultTableModel model = (DefaultTableModel) repotItemsTable.getModel();
                 model.setRowCount(0);
                 int rowCount = repotItemsTable.getRowCount();
-                while (reportRs.next()) {
+                while (medicalHistoryRs.next()) {
 
                     Vector v = new Vector();
                     v.add(++rowCount);
-                    v.add(reportRs.getString("title"));
-                    v.add(reportRs.getString("value"));
+                    v.add(medicalHistoryRs.getString("m.medical_note"));
+                    v.add(medicalHistoryRs.getString("t.plan"));
+                    v.add(medicalHistoryRs.getString("m.date_time"));
+
                     model.addRow(v);
                 }
 
@@ -108,14 +110,11 @@ public class PatientMedicalReport extends javax.swing.JFrame {
         discountTextLabel = new javax.swing.JLabel();
         dateLabel = new javax.swing.JLabel();
         genderLabel = new javax.swing.JLabel();
-        reportIdTextLabel = new javax.swing.JLabel();
-        totalTextLabel3 = new javax.swing.JLabel();
         jSeparator2 = new javax.swing.JSeparator();
         jLabel1 = new javax.swing.JLabel();
         jSeparator3 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         repotItemsTable = new javax.swing.JTable();
-        jLabel3 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -125,7 +124,7 @@ public class PatientMedicalReport extends javax.swing.JFrame {
 
         jLabel2.setFont(new java.awt.Font("Poppins", 1, 18)); // NOI18N
         jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel2.setText("Diagnostic Report");
+        jLabel2.setText("Patient Medical Summery");
 
         totalTextLabel1.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         totalTextLabel1.setText("Full Name");
@@ -151,14 +150,6 @@ public class PatientMedicalReport extends javax.swing.JFrame {
         genderLabel.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         genderLabel.setText(" ");
 
-        reportIdTextLabel.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        reportIdTextLabel.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        reportIdTextLabel.setText(" ");
-
-        totalTextLabel3.setFont(new java.awt.Font("Poppins", 0, 12)); // NOI18N
-        totalTextLabel3.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
-        totalTextLabel3.setText("Report ID");
-
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
         jPanel4Layout.setHorizontalGroup(
@@ -172,15 +163,11 @@ public class PatientMedicalReport extends javax.swing.JFrame {
                     .addComponent(discountTextLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(patientFullNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(patientFullNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, 364, Short.MAX_VALUE)
                     .addComponent(ageLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(genderLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(dateLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(reportIdTextLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(totalTextLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 124, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
+                .addGap(136, 136, 136))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -195,19 +182,14 @@ public class PatientMedicalReport extends javax.swing.JFrame {
                         .addComponent(discountTextLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(3, 3, 3)
                         .addComponent(discountTextLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 13, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(totalTextLabel3)
-                            .addGap(0, 0, 0)
-                            .addComponent(reportIdTextLabel))
-                        .addGroup(jPanel4Layout.createSequentialGroup()
-                            .addComponent(patientFullNameLabel)
-                            .addGap(1, 1, 1)
-                            .addComponent(ageLabel)
-                            .addGap(0, 0, 0)
-                            .addComponent(genderLabel)
-                            .addGap(0, 0, 0)
-                            .addComponent(dateLabel))))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(patientFullNameLabel)
+                        .addGap(1, 1, 1)
+                        .addComponent(ageLabel)
+                        .addGap(0, 0, 0)
+                        .addComponent(genderLabel)
+                        .addGap(0, 0, 0)
+                        .addComponent(dateLabel)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -223,19 +205,19 @@ public class PatientMedicalReport extends javax.swing.JFrame {
 
         repotItemsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "No.", "Descroption", "Result"
+                "No.", "Medical Note", "Treatment Plan", "Date Time"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -258,10 +240,6 @@ public class PatientMedicalReport extends javax.swing.JFrame {
             repotItemsTable.getColumnModel().getColumn(0).setMaxWidth(50);
         }
 
-        jLabel3.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Blood Test");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -274,7 +252,6 @@ public class PatientMedicalReport extends javax.swing.JFrame {
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -289,11 +266,9 @@ public class PatientMedicalReport extends javax.swing.JFrame {
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
-                .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 166, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
@@ -366,7 +341,6 @@ public class PatientMedicalReport extends javax.swing.JFrame {
     private javax.swing.JLabel genderLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -375,10 +349,8 @@ public class PatientMedicalReport extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator2;
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JLabel patientFullNameLabel;
-    private javax.swing.JLabel reportIdTextLabel;
     private javax.swing.JTable repotItemsTable;
     private javax.swing.JLabel totalTextLabel;
     private javax.swing.JLabel totalTextLabel1;
-    private javax.swing.JLabel totalTextLabel3;
     // End of variables declaration//GEN-END:variables
 }
