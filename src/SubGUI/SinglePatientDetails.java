@@ -1,27 +1,33 @@
 package SubGUI;
 
 import controller.PatientTableQueryBuilder;
+import gui.Home;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.util.Vector;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL;
+import controller.permissions.AccessControl;
 
 public class SinglePatientDetails extends javax.swing.JFrame {
 
     private String patientNic;
+    private Home home;
 
-    public SinglePatientDetails(String patientNic) {
+    public SinglePatientDetails(String patientNic, Home home) {
         this.patientNic = patientNic;
+        this.home = home;
+
         initComponents();
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icon.png")));
         loadPatientDetails();
         loadMedicalRecordsTable();
         loadTreatmentPlanTable();
+        loadAppointmentsPendingMedicalRecords();
     }
 
-    private void loadPatientDetails() {
+    public void loadPatientDetails() {
         try {
             ResultSet resultSet = MySQL.execute("SELECT p.*,g.gender AS gender_name, "
                     + "TIMESTAMPDIFF(YEAR, p.date_of_birth, CURDATE()) AS age "
@@ -57,27 +63,12 @@ public class SinglePatientDetails extends javax.swing.JFrame {
                 v6.add("Registration Date");
                 v6.add(resultSet.getString("registered_date"));
 
-                Vector v7 = new Vector();
-                v7.add("Appointments Count");
-                v7.add("4");
-
-                Vector v8 = new Vector();
-                v8.add("Medical Records Count");
-                v8.add("4");
-
-                Vector v9 = new Vector();
-                v9.add("Treatment Plans Count");
-                v9.add("4");
-
                 model.addRow(v1);
                 model.addRow(v2);
                 model.addRow(v3);
                 model.addRow(v4);
                 model.addRow(v5);
                 model.addRow(v6);
-                model.addRow(v7);
-                model.addRow(v8);
-                model.addRow(v9);
 
             } else {
                 JOptionPane.showMessageDialog(this, "Something Went Wrong. Try Again", "Warning", JOptionPane.WARNING_MESSAGE);
@@ -87,6 +78,37 @@ public class SinglePatientDetails extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "An unexpected error has occurred. Please try again later or contact support if the issue persists.", "Unexpected Error", JOptionPane.ERROR_MESSAGE);
             e.printStackTrace();
         }
+    }
+
+    public void loadAppointmentsPendingMedicalRecords() {
+
+        try {
+
+            DefaultTableModel model = (DefaultTableModel) pastAppointmentDetailsTable.getModel();
+            model.setRowCount(0);
+
+            ResultSet results = MySQL.execute("SELECT * FROM appointment a "
+                    + "INNER JOIN service s ON a.service_id = s.id "
+                    + "WHERE a.patient_nic = '" + patientNic + "' "
+                    + "AND NOT EXISTS ( "
+                    + "   SELECT 1 FROM medical_history m "
+                    + "   WHERE m.appointment_id = a.id "
+                    + ")"
+                    + "AND TIMESTAMP(a.appointment_date, s.time) < NOW()");
+
+            while (results.next()) {
+                Vector v = new Vector();
+                v.add(results.getString("a.id"));
+                v.add(results.getString("s.service_name"));
+                v.add(results.getString("a.appointment_date"));
+                v.add(results.getString("s.time"));
+                model.addRow(v);
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
 
     public void loadMedicalRecordsTable() {
@@ -159,6 +181,9 @@ public class SinglePatientDetails extends javax.swing.JFrame {
         jScrollPane4 = new javax.swing.JScrollPane();
         patientDetailsTable = new javax.swing.JTable();
         jPanel10 = new javax.swing.JPanel();
+        jLabel5 = new javax.swing.JLabel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        pastAppointmentDetailsTable = new javax.swing.JTable();
         jPanel7 = new javax.swing.JPanel();
         jPanel9 = new javax.swing.JPanel();
         jLabel2 = new javax.swing.JLabel();
@@ -195,7 +220,7 @@ public class SinglePatientDetails extends javax.swing.JFrame {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        jPanel4.setLayout(new java.awt.GridLayout());
+        jPanel4.setLayout(new java.awt.GridLayout(1, 0));
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -215,7 +240,7 @@ public class SinglePatientDetails extends javax.swing.JFrame {
         );
 
         jPanel6.setPreferredSize(new java.awt.Dimension(638, 250));
-        jPanel6.setLayout(new java.awt.GridLayout());
+        jPanel6.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel4.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jLabel4.setForeground(new java.awt.Color(51, 51, 51));
@@ -227,9 +252,6 @@ public class SinglePatientDetails extends javax.swing.JFrame {
 
         patientDetailsTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
                 {null, null},
                 {null, null},
                 {null, null},
@@ -253,10 +275,6 @@ public class SinglePatientDetails extends javax.swing.JFrame {
         patientDetailsTable.setShowGrid(false);
         patientDetailsTable.setShowVerticalLines(true);
         jScrollPane4.setViewportView(patientDetailsTable);
-        if (patientDetailsTable.getColumnModel().getColumnCount() > 0) {
-            patientDetailsTable.getColumnModel().getColumn(0).setPreferredWidth(200);
-            patientDetailsTable.getColumnModel().getColumn(0).setMaxWidth(200);
-        }
 
         javax.swing.GroupLayout jPanel11Layout = new javax.swing.GroupLayout(jPanel11);
         jPanel11.setLayout(jPanel11Layout);
@@ -275,26 +293,75 @@ public class SinglePatientDetails extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel4)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 208, Short.MAX_VALUE)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
         jPanel6.add(jPanel11);
 
+        jLabel5.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        jLabel5.setForeground(new java.awt.Color(51, 51, 51));
+        jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel5.setText("Pending Appointments to Add Medical Records and Treatments");
+        jLabel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
+
+        jScrollPane5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
+
+        pastAppointmentDetailsTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                " Appoint. ID", " Service", "Appoint. Date", "Time"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        pastAppointmentDetailsTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        pastAppointmentDetailsTable.setShowGrid(false);
+        pastAppointmentDetailsTable.setShowVerticalLines(true);
+        pastAppointmentDetailsTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                pastAppointmentDetailsTableMouseClicked(evt);
+            }
+        });
+        jScrollPane5.setViewportView(pastAppointmentDetailsTable);
+
         javax.swing.GroupLayout jPanel10Layout = new javax.swing.GroupLayout(jPanel10);
         jPanel10.setLayout(jPanel10Layout);
         jPanel10Layout.setHorizontalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 638, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane5)
+                    .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 626, Short.MAX_VALUE))
+                .addContainerGap())
         );
         jPanel10Layout.setVerticalGroup(
             jPanel10Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 250, Short.MAX_VALUE)
+            .addGroup(jPanel10Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.DEFAULT_SIZE, 149, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel6.add(jPanel10);
 
-        jPanel7.setLayout(new java.awt.GridLayout());
+        jPanel7.setLayout(new java.awt.GridLayout(1, 0));
 
         jLabel2.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jLabel2.setForeground(new java.awt.Color(51, 51, 51));
@@ -313,7 +380,7 @@ public class SinglePatientDetails extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -342,7 +409,7 @@ public class SinglePatientDetails extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -365,7 +432,7 @@ public class SinglePatientDetails extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, true, true
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -394,7 +461,7 @@ public class SinglePatientDetails extends javax.swing.JFrame {
                 .addContainerGap()
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 473, Short.MAX_VALUE)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 479, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -415,8 +482,8 @@ public class SinglePatientDetails extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
@@ -460,6 +527,26 @@ public class SinglePatientDetails extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void pastAppointmentDetailsTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_pastAppointmentDetailsTableMouseClicked
+        if (evt.getClickCount() == 2) {
+            int selectedRow = pastAppointmentDetailsTable.getSelectedRow();
+            if (selectedRow != -1) {
+
+                AccessControl accessControl = new AccessControl();
+
+                if (accessControl.hasAccess(AccessControl.ADD_MEDICAL_RECORD)) {
+                    String appointmentId = String.valueOf(pastAppointmentDetailsTable.getValueAt(selectedRow, 0));
+                    AddNewMedicalRecord addNewMedicalRecord = new AddNewMedicalRecord(this, true, this, appointmentId, patientNic);
+                    addNewMedicalRecord.setVisible(true);
+                }else{
+                    JOptionPane.showMessageDialog(this, "Access Denied for Add Medical Records", "Warning", JOptionPane.WARNING_MESSAGE);
+                }                    
+
+            }
+
+        }
+    }//GEN-LAST:event_pastAppointmentDetailsTableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -515,6 +602,7 @@ public class SinglePatientDetails extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -529,7 +617,9 @@ public class SinglePatientDetails extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
     private javax.swing.JTable medicalRecordsTable;
+    private javax.swing.JTable pastAppointmentDetailsTable;
     private javax.swing.JTable patientDetailsTable;
     private javax.swing.JLabel titleLable;
     private javax.swing.JTable treatmentDetailsTable;
