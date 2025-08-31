@@ -208,7 +208,7 @@ public class Signin extends javax.swing.JFrame {
             this.dispose();
             
         } else {
-            userBean = null;
+            userBean = new UserBean();
         }
 
     }//GEN-LAST:event_jButton1ActionPerformed
