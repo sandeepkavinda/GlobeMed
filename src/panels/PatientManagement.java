@@ -410,7 +410,7 @@ public class PatientManagement extends javax.swing.JPanel {
             int selectedRow = patientTable.getSelectedRow();
             if (selectedRow != -1) {
                 String patientNic = String.valueOf(patientTable.getValueAt(selectedRow, 0));
-                SinglePatientDetails patientDetails = new SinglePatientDetails(patientNic);
+                SinglePatientDetails patientDetails = new SinglePatientDetails(patientNic,home);
                 patientDetails.setVisible(true);
             }
 
