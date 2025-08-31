@@ -1,6 +1,9 @@
 package SubGUI;
 
 import com.raven.datechooser.DateChooser;
+import controller.appointment.AddAppointmentCommand;
+import controller.appointment.AddPatientCommand;
+import controller.appointment.AppointmentInvoker;
 import model.IdGenerater;
 import java.awt.Toolkit;
 import java.awt.event.ItemEvent;
@@ -204,10 +207,11 @@ public class AddNewAppointment extends javax.swing.JDialog {
         nicTextField.grabFocus();
     }
 
-    private void addNewPatient() {
+    private void addNewAppointment() {
         String nic = nicTextField.getText();
         int selectedService = serviceComboBox.getSelectedIndex();
         String selectedAppotmentDate = appointmentDateTextField.getText();
+        AppointmentInvoker invoker = new AppointmentInvoker();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate formattedSelectedAppotmentDate = LocalDate.parse(appointmentDateTextField.getText(), formatter);
@@ -241,8 +245,11 @@ public class AddNewAppointment extends javax.swing.JDialog {
                     // Patient Registered
                     String patientNic = patientResultSet.getString("p.nic");
 
-                    MySQL.execute("INSERT INTO appointment (`id`,`appointment_date`,`patient_nic`,`service_id`,added_date_time,`queue_no`) "
-                            + "VALUES ('" + appointmentId + "','" + selectedAppotmentDate + "','" + patientNic + "','" + serviceId + "','" + currentDateTime + "','" + queueNumber + "')");
+                    invoker.addCommand(new AddAppointmentCommand(appointmentId, patientNic, serviceId, selectedAppotmentDate, queueNumber, currentDateTime));
+                    invoker.executeCommands();
+
+//                    MySQL.execute("INSERT INTO appointment (`id`,`appointment_date`,`patient_nic`,`service_id`,added_date_time,`queue_no`) "
+//                            + "VALUES ('" + appointmentId + "','" + selectedAppotmentDate + "','" + patientNic + "','" + serviceId + "','" + currentDateTime + "','" + queueNumber + "')");
 
                     JOptionPane.showMessageDialog(this, "Appointment Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/resources/success.png")));
 
@@ -295,12 +302,16 @@ public class AddNewAppointment extends javax.swing.JDialog {
 
                                 if (genderResultSet.next()) {
                                     String genderId = genderResultSet.getString("id");
-                                    MySQL.execute("INSERT INTO `patient` (`nic`,`full_name`,`date_of_birth`,`gender_id`,address,`registered_date`) "
-                                            + "VALUES ('" + nic + "','" + fullName + "','" + dateOfBirth + "','" + genderId + "','" + address + "','" + currentDateTime + "')");
 
-                                    MySQL.execute("INSERT INTO appointment (`id`,`appointment_date`,`patient_nic`,`service_id`,added_date_time,`queue_no`) "
-                                            + "VALUES ('" + appointmentId + "','" + selectedAppotmentDate + "','" + nic + "','" + serviceId + "','" + currentDateTime + "','" + queueNumber + "')");
+                                    invoker.addCommand(new AddPatientCommand(nic, fullName, dateOfBirth, genderId, address, currentDateTime));
+                                    invoker.addCommand(new AddAppointmentCommand(appointmentId, nic, serviceId, selectedAppotmentDate, queueNumber, currentDateTime));
+                                    invoker.executeCommands();
 
+//                                    MySQL.execute("INSERT INTO `patient` (`nic`,`full_name`,`date_of_birth`,`gender_id`,address,`registered_date`) "
+//                                            + "VALUES ('" + nic + "','" + fullName + "','" + dateOfBirth + "','" + genderId + "','" + address + "','" + currentDateTime + "')");
+//
+//                                    MySQL.execute("INSERT INTO appointment (`id`,`appointment_date`,`patient_nic`,`service_id`,added_date_time,`queue_no`) "
+//                                            + "VALUES ('" + appointmentId + "','" + selectedAppotmentDate + "','" + nic + "','" + serviceId + "','" + currentDateTime + "','" + queueNumber + "')");
                                     JOptionPane.showMessageDialog(this, "Appointment and Patient Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/resources/success.png")));
 
                                     loadAppointmentTable();
@@ -327,69 +338,6 @@ public class AddNewAppointment extends javax.swing.JDialog {
 
         }
 
-//        String fullName = fullNameTextField.getText();
-//        String dateOfBirth = dobTextField.getText();
-//        String gender = genderComboBox.getSelectedItem().toString();
-//        String address = addressTextArea.getText();
-//
-//        if (nic.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Please Enter Patient's NIC Number", "Warning", JOptionPane.WARNING_MESSAGE);
-//            nicTextField.grabFocus();
-//        } else if (nic.length() > 12) {
-//            JOptionPane.showMessageDialog(this, "Invalid NIC Number", "Warning", JOptionPane.WARNING_MESSAGE);
-//            nicTextField.grabFocus();
-//            nicTextField.selectAll();
-//        } else if (fullName.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Please Enter Full Name", "Warning", JOptionPane.WARNING_MESSAGE);
-//            fullNameTextField.grabFocus();
-//        } else if (fullName.length() > 150) {
-//            JOptionPane.showMessageDialog(this, "The Full Name must contain fewer than 150 characters.", "Warning", JOptionPane.WARNING_MESSAGE);
-//            fullNameTextField.grabFocus();
-//            fullNameTextField.selectAll();
-//        } else if (dateOfBirth.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Please Select Patient's Date of Birth", "Warning", JOptionPane.WARNING_MESSAGE);
-//            dobTextField.grabFocus();
-//        } else if (gender.equals("Select")) {
-//            JOptionPane.showMessageDialog(this, "Please Select Patient's Gender", "Warning", JOptionPane.WARNING_MESSAGE);
-//            dobTextField.grabFocus();
-//            dobTextField.selectAll();
-//        } else if (address.isEmpty()) {
-//            JOptionPane.showMessageDialog(this, "Please Enter Patient's Address", "Warning", JOptionPane.WARNING_MESSAGE);
-//            genderComboBox.grabFocus();
-//        } else {
-//
-//            try {
-//                ResultSet resultset = MySQL.execute("SELECT * FROM `patient` WHERE `nic`='" + nic + "'");
-//                if (resultset.next()) {
-//                    JOptionPane.showMessageDialog(this, '"' + "NIC Already Registered", "Warning", JOptionPane.WARNING_MESSAGE);
-//                    nicTextField.grabFocus();
-//                    nicTextField.selectAll();
-//                } else {
-//                    Date date = new Date();
-//                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-//                    String currentDateTime = format.format(date);
-//
-//                    ResultSet genderResultSet = MySQL.execute("SELECT * FROM `gender` WHERE `gender`='" + gender + "'");
-//
-//                    if (genderResultSet.next()) {
-//                        String genderId = genderResultSet.getString("id");
-//                        MySQL.execute("INSERT INTO `patient` (`nic`,`full_name`,`date_of_birth`,`gender_id`,address,`registered_date`) "
-//                                + "VALUES ('" + nic + "','" + fullName + "','" + dateOfBirth + "','" + genderId + "','" + address + "','" + currentDateTime + "')");
-//                        JOptionPane.showMessageDialog(this, "Patiemt Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/resources/success.png")));
-//                        loadAppointmentTable();
-//                        resetFields();
-//                        appointmentManagement.loadAppointmentTable();
-//                    } else {
-//                        JOptionPane.showMessageDialog(this, "Something Went Wrong. Try Again", "Warning", JOptionPane.WARNING_MESSAGE);
-//                    }
-//
-//                }
-//            } catch (Exception e) {
-//                JOptionPane.showMessageDialog(this, "An error occurred: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-//                e.printStackTrace();
-//            }
-//
-//        }
     }
 
     @SuppressWarnings("unchecked")
@@ -790,7 +738,7 @@ public class AddNewAppointment extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void addPatientButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPatientButtonActionPerformed
-        addNewPatient();
+        addNewAppointment();
     }//GEN-LAST:event_addPatientButtonActionPerformed
 
     private void resetButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_resetButtonActionPerformed
