@@ -1,6 +1,7 @@
 package SubGUI;
 
 import com.raven.datechooser.DateChooser;
+import controller.billing.BillingController;
 import java.awt.Toolkit;
 import java.sql.ResultSet;
 import java.text.SimpleDateFormat;
@@ -24,7 +25,7 @@ import panels.PatientManagement;
 public class NewBill extends javax.swing.JDialog {
 
     BillingManagement billingManagement;
-    private HashMap<Integer, String> paymentMethodMap = new HashMap<>();
+    public static HashMap<Integer, String> paymentMethodMap = new HashMap<>();
 
     public NewBill(java.awt.Frame parent, boolean modal, BillingManagement billingManagement) {
         super(parent, modal);
@@ -138,7 +139,7 @@ public class NewBill extends javax.swing.JDialog {
         paymentMethodComboBox.setSelectedIndex(0);
         appointmentIdTextField.grabFocus();
         jLabel9.setText("LKR 0.00");
-        
+
         payButton.setEnabled(false);
     }
 
@@ -151,56 +152,19 @@ public class NewBill extends javax.swing.JDialog {
         } else if (selectedPaymentIndex == 0) {
             JOptionPane.showMessageDialog(this, "Please Select Payment Method", "Warning", JOptionPane.WARNING_MESSAGE);
         } else {
+
             try {
-                ResultSet appointmentResult = MySQL.execute("SELECT * FROM appointment a "
-                        + "WHERE id = '" + appoitmentId + "'");
-
-                if (appointmentResult.next()) {
-                    String billId = IdGenerater.generateId("bill", "id", "BLL");
-                    String paymentMethodId = paymentMethodMap.get(selectedPaymentIndex);
-                    Date date = new Date();
-                    SimpleDateFormat format = new SimpleDateFormat("YYYY-MM-dd HH:mm:ss");
-                    String currentDateTime = format.format(date);
-
-                    MySQL.execute("INSERT INTO `bill` (`id`,`date_time`,`appointment_id`,`payment_method_id`) "
-                            + "VALUES ('" + billId + "','" + currentDateTime + "','" + appoitmentId + "','" + paymentMethodId + "')");
-                    JOptionPane.showMessageDialog(this, "Bill Paied Successfully", "Success", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/resources/success.png")));
-
-                } else {
-                    JOptionPane.showMessageDialog(this, "Invalid Appointment Try Again", "Warning", JOptionPane.WARNING_MESSAGE);
-                }
-
+                
+                String paymentMethodId = paymentMethodMap.get(selectedPaymentIndex);
+                BillingController billingController = new BillingController();
+                billingController.processBilling(appoitmentId, paymentMethodId);
+                
             } catch (Exception e) {
                 e.printStackTrace();
+                JOptionPane.showMessageDialog(this, e.getMessage(), "Warning", JOptionPane.WARNING_MESSAGE);
             }
+
         }
-
-        try {
-            DefaultTableModel model = (DefaultTableModel) userTable.getModel();
-            model.setRowCount(0);
-
-            ResultSet results = MySQL.execute("SELECT * FROM bill b "
-                    + "INNER JOIN appointment a ON b.appointment_id = a.id "
-                    + "INNER JOIN service s ON a.service_id = s.id "
-                    + "INNER JOIN payment_method p ON b.payment_method_id = p.id "
-                    + "ORDER BY b.date_time DESC");
-
-            while (results.next()) {
-
-                Vector v = new Vector();
-                v.add(results.getString("b.id"));
-                v.add(results.getString("b.date_time"));
-                v.add(results.getString("a.id"));
-                v.add(CurrencyFormatter.formatCurrency(results.getDouble("s.price")));
-                v.add(results.getString("p.method"));
-                model.addRow(v);
-            }
-            billingManagement.loadBillingTable();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-       
     }
 
     @SuppressWarnings("unchecked")

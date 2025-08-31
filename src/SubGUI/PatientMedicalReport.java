@@ -48,7 +48,7 @@ public class PatientMedicalReport extends javax.swing.JFrame {
         return false;
     }
 
-    private boolean loadReportData() {
+    private void loadReportData() {
         try {
             ResultSet resultSet = MySQL.execute("SELECT *, "
                     + "TIMESTAMPDIFF(YEAR, p.date_of_birth, CURDATE()) AS age "
@@ -90,7 +90,6 @@ public class PatientMedicalReport extends javax.swing.JFrame {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return false;
     }
 
     @SuppressWarnings("unchecked")
