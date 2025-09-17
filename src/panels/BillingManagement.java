@@ -6,20 +6,25 @@ package panels;
 
 import SubGUI.NewBill;
 import controller.BillingTableQueryBuilder;
+import controller.permissions.AccessControl;
+import controller.permissions.AccessHandler;
 import gui.Home;
+import gui.Signin;
 import java.awt.event.ItemEvent;
 import model.MySQL;
 import java.sql.ResultSet;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.CurrencyFormatter;
 
 public class BillingManagement extends javax.swing.JPanel {
 
     private Home home;
-    
+    private AccessControl accessControl = new AccessControl();
+
     public BillingManagement(Home home) {
-        this.home =home;
+        this.home = home;
         initComponents();
         loadBillingTable();
     }
@@ -331,8 +336,14 @@ public class BillingManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_sortByComboBoxItemStateChanged
 
     private void newInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newInvoiceButtonActionPerformed
-        NewBill newBill = new NewBill(home,true,this);
-        newBill.setVisible(true);
+        if (accessControl.hasAccess(AccessHandler.ADD_NEW_BILL)) {
+            NewBill newBill = new NewBill(home, true, this);
+            newBill.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "No Permissions for '" + Signin.userBean.getStaffRole() + "S'", "Access Denied", JOptionPane.WARNING_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_newInvoiceButtonActionPerformed
 
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased

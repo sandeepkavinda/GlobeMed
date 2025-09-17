@@ -134,7 +134,7 @@ public class AddNewPatient extends javax.swing.JDialog {
                     nicTextField.selectAll();
                 } else {
                     Date date = new Date();
-                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                    SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                     String currentDateTime = format.format(date);
 
                     ResultSet genderResultSet = MySQL.execute("SELECT * FROM `gender` WHERE `gender`='" + gender + "'");
@@ -143,7 +143,7 @@ public class AddNewPatient extends javax.swing.JDialog {
                         String genderId = genderResultSet.getString("id");
                         MySQL.execute("INSERT INTO `patient` (`nic`,`full_name`,`date_of_birth`,`gender_id`,address,`registered_date`) "
                                 + "VALUES ('" + nic + "','" + fullName + "','" + dateOfBirth + "','" + genderId + "','"+address+"','" + currentDateTime + "')");
-                        JOptionPane.showMessageDialog(this, "Patiemt Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/resources/success.png")));
+                        JOptionPane.showMessageDialog(this, "Patient Added Successfully", "Success", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/resources/success.png")));
                         loadPatientTable();
                         resetFields();
                         patientManagement.loadPatientTable();

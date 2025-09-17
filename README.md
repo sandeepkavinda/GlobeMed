@@ -5,11 +5,11 @@ It manages doctors, nurses, pharmacists, patients, appointments, treatments, and
 
 ## Queries 
 
-INSERT INTO `staff_role` (`id`, `role`) VALUES (1, 'Admin');
-INSERT INTO `staff_role` (`id`, `role`) VALUES (2, 'Doctor');
-INSERT INTO `staff_role` (`id`, `role`) VALUES (3, 'Nurse');
-INSERT INTO `staff_role` (`id`, `role`) VALUES (4, 'Pharmacists');
-INSERT INTO `staff_role` (`id`, `role`) VALUES (5, 'Administrative Staff');
+INSERT INTO `staff_role` (`id`, `role`) VALUES (1, 'ADMIN');
+INSERT INTO `staff_role` (`id`, `role`) VALUES (2, 'DOCTOR');
+INSERT INTO `staff_role` (`id`, `role`) VALUES (3, 'NURSE');
+INSERT INTO `staff_role` (`id`, `role`) VALUES (4, 'PHARMACIST');
+INSERT INTO `staff_role` (`id`, `role`) VALUES (5, 'RECEPTIONIST');
 
 INSERT INTO `staff_status` (`id`, `status`) VALUES (1, 'Active');
 INSERT INTO `staff_status` (`id`, `status`) VALUES (2, 'Deactive');
@@ -25,6 +25,6 @@ INSERT INTO `report_type` (`id`, `type`) VALUES (1, 'Patient Medical Summery');
 INSERT INTO `report_type` (`id`, `type`) VALUES (2, 'Diagnostic Results');
 INSERT INTO `report_type` (`id`, `type`) VALUES (3, 'Financial Report');
 
-INSERT INTO `service_type` (`id`, `type`) VALUES (1, 'Consultations');
+INSERT INTO `service_type` (`id`, `type`) VALUES (1, 'Consultation');
 INSERT INTO `service_type` (`id`, `type`) VALUES (2, 'Diagnostics Test');
-INSERT INTO `service_type` (`id`, `type`) VALUES (3, 'Surgeries');
+INSERT INTO `service_type` (`id`, `type`) VALUES (3, 'Surgerie');

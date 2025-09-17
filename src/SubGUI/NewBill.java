@@ -158,6 +158,8 @@ public class NewBill extends javax.swing.JDialog {
                 String paymentMethodId = paymentMethodMap.get(selectedPaymentIndex);
                 BillingController billingController = new BillingController();
                 billingController.processBilling(appoitmentId, paymentMethodId);
+                loadBillTable();
+                resetFields();
                 
             } catch (Exception e) {
                 e.printStackTrace();

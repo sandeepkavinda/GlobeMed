@@ -9,6 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.MySQL;
 import controller.permissions.AccessControl;
+import controller.permissions.AccessHandler;
 
 public class SinglePatientDetails extends javax.swing.JFrame {
 
@@ -302,7 +303,7 @@ public class SinglePatientDetails extends javax.swing.JFrame {
         jLabel5.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
         jLabel5.setForeground(new java.awt.Color(51, 51, 51));
         jLabel5.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel5.setText("Pending Appointments to Add Medical Records and Treatments");
+        jLabel5.setText("Pending to Medical Records (Double Click To Open)");
         jLabel5.setBorder(javax.swing.BorderFactory.createEmptyBorder(1, 10, 1, 1));
 
         jScrollPane5.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
@@ -535,7 +536,7 @@ public class SinglePatientDetails extends javax.swing.JFrame {
 
                 AccessControl accessControl = new AccessControl();
 
-                if (accessControl.hasAccess(AccessControl.ADD_MEDICAL_RECORD)) {
+                if (accessControl.hasAccess(AccessHandler.ADD_MEDICAL_RECORD)) {
                     String appointmentId = String.valueOf(pastAppointmentDetailsTable.getValueAt(selectedRow, 0));
                     AddNewMedicalRecord addNewMedicalRecord = new AddNewMedicalRecord(this, true, this, appointmentId, patientNic);
                     addNewMedicalRecord.setVisible(true);

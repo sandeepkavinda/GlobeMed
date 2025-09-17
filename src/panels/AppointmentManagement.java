@@ -6,19 +6,25 @@ package panels;
 
 import SubGUI.AddNewAppointment;
 import controller.AppointmentTableQueryBuilder;
+import controller.permissions.AccessControl;
+import controller.permissions.AccessHandler;
+import static controller.permissions.AccessHandler.ADD_NEW_PATIENT;
 import gui.Home;
+import gui.Signin;
 import java.awt.event.ItemEvent;
 import model.MySQL;
 import java.sql.ResultSet;
 import java.util.Vector;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class AppointmentManagement extends javax.swing.JPanel {
 
     private Home home;
-    
+    private AccessControl accessControl = new AccessControl();
+
     public AppointmentManagement(Home home) {
-        this.home=home;
+        this.home = home;
         initComponents();
         loadAppointmentTable();
     }
@@ -374,8 +380,14 @@ public class AppointmentManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_sortByComboBoxItemStateChanged
 
     private void newInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newInvoiceButtonActionPerformed
-        AddNewAppointment newAppointmnet = new AddNewAppointment(home,true,this);
-        newAppointmnet.setVisible(true);
+
+        if (accessControl.hasAccess(AccessHandler.ADD_NEW_APPOINTMENT)) {
+            AddNewAppointment newAppointmnet = new AddNewAppointment(home, true, this);
+            newAppointmnet.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "No Permissions for '" + Signin.userBean.getStaffRole() + "S'", "Access Denied", JOptionPane.WARNING_MESSAGE);
+        }
+
     }//GEN-LAST:event_newInvoiceButtonActionPerformed
 
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
@@ -383,7 +395,7 @@ public class AppointmentManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_searchTextFieldKeyReleased
 
     private void appointmentTypeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_appointmentTypeComboBoxItemStateChanged
-       if (evt.getStateChange() == ItemEvent.SELECTED) {
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
             loadAppointmentTable();
         }
     }//GEN-LAST:event_appointmentTypeComboBoxItemStateChanged

@@ -4,62 +4,93 @@
  */
 package panels;
 
+import SubGUI.AddNewPatient;
+import SubGUI.AddNewStaffMember;
+import SubGUI.SinglePatientDetails;
+import controller.StaffTableQueryBuilder;
+import controller.permissions.AccessControl;
+import controller.permissions.AccessHandler;
+import gui.Home;
+import gui.Signin;
 import java.awt.event.ItemEvent;
 import model.MySQL;
 import java.sql.ResultSet;
 import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class StaffManagement extends javax.swing.JPanel {
 
-    public StaffManagement() {
+    private Home home;
+    AccessControl accessControl = new AccessControl();
+
+    public StaffManagement(Home home) {
+        this.home = home;
         initComponents();
-        loadInvoiceTable();
+        loadRoles();
+        loadActiveStatuses();
+        loadStaffTable();
     }
 
-    public void loadInvoiceTable() {
+    private void loadRoles() {
+        try {
+            ResultSet result = MySQL.execute("SELECT * FROM `staff_role`");
+            Vector v = new Vector();
+            v.add("All");
+            while (result.next()) {
+                v.add(result.getString("role"));
+            }
+            DefaultComboBoxModel model = new DefaultComboBoxModel(v);
+            staffRoleComboBox.setModel(model);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadActiveStatuses() {
+        try {
+            ResultSet result = MySQL.execute("SELECT * FROM `staff_status`");
+            Vector v = new Vector();
+            v.add("All");
+            while (result.next()) {
+                v.add(result.getString("status"));
+            }
+            DefaultComboBoxModel model = new DefaultComboBoxModel(v);
+            activeStatusComboBox.setModel(model);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadStaffTable() {
         try {
             String search = searchTextField.getText();
             int sortBy = sortByComboBox.getSelectedIndex();
+            String role = staffRoleComboBox.getSelectedItem().toString();
+            String status = activeStatusComboBox.getSelectedItem().toString();
 
-            String sortByColumn = "";
-            String sortByType = "";
-
-            if (sortBy == 0) {
-                sortByColumn = "h.id";
-                sortByType = "ASC";
-            } else if (sortBy == 1) {
-                sortByColumn = "h.id";
-                sortByType = "DESC";
-            } else if (sortBy == 2) {
-                sortByColumn = "h.name";
-                sortByType = "ASC";
-            } else if (sortBy == 3) {
-                sortByColumn = "h.name";
-                sortByType = "DESC";
-            } else if (sortBy == 4) {
-                sortByColumn = "staff_count";
-                sortByType = "DESC";
-            } else if (sortBy == 5) {
-                sortByColumn = "staff_count";
-                sortByType = "ASC";
-            }
-
-            DefaultTableModel model = (DefaultTableModel) invoiceTable.getModel();
+            DefaultTableModel model = (DefaultTableModel) staffTable.getModel();
             model.setRowCount(0);
-            
-            ResultSet results = MySQL.execute("SELECT h.*, COUNT(s.nic) AS staff_count FROM hospital h "
-                    + "LEFT JOIN staff s ON h.id = s.hospital_id "
-                    + "WHERE h.id LIKE '%"+search+"%' OR h.name LIKE '%"+search+"%' "
-                    + "GROUP BY h.id "
-                    + "ORDER BY "+sortByColumn+" "+sortByType+" ");
+
+            ResultSet results = MySQL.execute(
+                    new StaffTableQueryBuilder()
+                            .search(search)
+                            .order(sortBy)
+                            .role(role)
+                            .status(status)
+                            .hospitalId(Signin.userBean.getHospitalId())
+                            .build()
+            );
 
             while (results.next()) {
                 Vector v = new Vector();
-                v.add(results.getString("id"));
-                v.add(results.getString("name"));
-                v.add(results.getString("staff_count"));
-                
+                v.add(results.getString("nic"));
+                v.add(results.getString("first_name"));
+                v.add(results.getString("last_name"));
+                v.add(results.getString("role"));
+                v.add(results.getString("status"));
                 model.addRow(v);
             }
         } catch (Exception e) {
@@ -70,7 +101,9 @@ public class StaffManagement extends javax.swing.JPanel {
     private void clearSearch() {
         searchTextField.setText("");
         sortByComboBox.setSelectedIndex(0);
-        loadInvoiceTable();
+        staffRoleComboBox.setSelectedIndex(0);
+        activeStatusComboBox.setSelectedIndex(0);
+        loadStaffTable();
     }
 
     /**
@@ -91,13 +124,19 @@ public class StaffManagement extends javax.swing.JPanel {
         jPanel4 = new javax.swing.JPanel();
         sortByComboBox = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        staffRoleComboBox = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
+        jPanel9 = new javax.swing.JPanel();
+        activeStatusComboBox = new javax.swing.JComboBox<>();
+        jLabel8 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         clearSearchButton = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
-        newInvoiceButton = new javax.swing.JButton();
+        newStaffMemberButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        invoiceTable = new javax.swing.JTable();
+        staffTable = new javax.swing.JTable();
 
         setMinimumSize(new java.awt.Dimension(852, 617));
         setPreferredSize(new java.awt.Dimension(852, 617));
@@ -144,7 +183,7 @@ public class StaffManagement extends javax.swing.JPanel {
                         .addComponent(jLabel6)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(searchTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                        .addComponent(searchTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 87, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(newInvoiceButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -165,7 +204,7 @@ public class StaffManagement extends javax.swing.JPanel {
 
         jPanel4.setForeground(new java.awt.Color(255, 51, 51));
 
-        sortByComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hospital Id (Ascending) ", "Hospital Id (Descending)", "Hospital Name (A-Z)", "Hospital Name (Z-A)", "Number of Staff (High to Low)", "Number of Staff (Low to High)" }));
+        sortByComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Latest Added First", "Oldest Added First", "First Name (A-Z)", "First Name (Z-A)", "Last Name (A-Z)", "Last Name (Z-A)" }));
         sortByComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 sortByComboBoxItemStateChanged(evt);
@@ -181,7 +220,7 @@ public class StaffManagement extends javax.swing.JPanel {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sortByComboBox, 0, 198, Short.MAX_VALUE)
+                    .addComponent(sortByComboBox, 0, 130, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -198,6 +237,78 @@ public class StaffManagement extends javax.swing.JPanel {
         );
 
         jPanel2.add(jPanel4);
+
+        jPanel5.setForeground(new java.awt.Color(255, 51, 51));
+
+        staffRoleComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Latest Added First", "Oldest Added First", "First Name (A-Z)", "First Name (Z-A)", "Last Name (A-Z)", "Last Name (Z-A)" }));
+        staffRoleComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                staffRoleComboBoxItemStateChanged(evt);
+            }
+        });
+
+        jLabel7.setText("Staff Role");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(staffRoleComboBox, 0, 130, Short.MAX_VALUE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(staffRoleComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel2.add(jPanel5);
+
+        jPanel9.setForeground(new java.awt.Color(255, 51, 51));
+
+        activeStatusComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Latest Added First", "Oldest Added First", "First Name (Z-A)", "First Name (A-Z)", "First Name (Z-A)", "Last Name (A-Z)", "Last Name (Z-A)" }));
+        activeStatusComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                activeStatusComboBoxItemStateChanged(evt);
+            }
+        });
+
+        jLabel8.setText("Active Status");
+
+        javax.swing.GroupLayout jPanel9Layout = new javax.swing.GroupLayout(jPanel9);
+        jPanel9.setLayout(jPanel9Layout);
+        jPanel9Layout.setHorizontalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(activeStatusComboBox, 0, 130, Short.MAX_VALUE)
+                    .addGroup(jPanel9Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel9Layout.setVerticalGroup(
+            jPanel9Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel9Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(activeStatusComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel2.add(jPanel9);
 
         jPanel8.setForeground(new java.awt.Color(255, 51, 51));
 
@@ -217,7 +328,7 @@ public class StaffManagement extends javax.swing.JPanel {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(clearSearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                .addComponent(clearSearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 130, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -233,10 +344,10 @@ public class StaffManagement extends javax.swing.JPanel {
         jPanel6.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 0, new java.awt.Color(204, 204, 204)));
         jPanel6.setForeground(new java.awt.Color(255, 51, 51));
 
-        newInvoiceButton.setText("New Invoice");
-        newInvoiceButton.addActionListener(new java.awt.event.ActionListener() {
+        newStaffMemberButton.setText("New Staff Member");
+        newStaffMemberButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newInvoiceButtonActionPerformed(evt);
+                newStaffMemberButtonActionPerformed(evt);
             }
         });
 
@@ -246,14 +357,14 @@ public class StaffManagement extends javax.swing.JPanel {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(newInvoiceButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(newStaffMemberButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addComponent(newInvoiceButton, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addComponent(newStaffMemberButton, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -261,27 +372,32 @@ public class StaffManagement extends javax.swing.JPanel {
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        invoiceTable.setModel(new javax.swing.table.DefaultTableModel(
+        staffTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Hospital Id", "Hospital Name", "Number of Staff Members"
+                "NIC", "First Name", "Last Name", "Staff Role", "Active Status"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        invoiceTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(invoiceTable);
-        if (invoiceTable.getColumnModel().getColumnCount() > 0) {
-            invoiceTable.getColumnModel().getColumn(1).setMinWidth(150);
-            invoiceTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+        staffTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        staffTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                staffTableMouseClicked(evt);
+            }
+        });
+        jScrollPane1.setViewportView(staffTable);
+        if (staffTable.getColumnModel().getColumnCount() > 0) {
+            staffTable.getColumnModel().getColumn(1).setMinWidth(150);
+            staffTable.getColumnModel().getColumn(1).setPreferredWidth(150);
         }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -331,7 +447,7 @@ public class StaffManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_clearSearchButtonActionPerformed
 
     private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
-        loadInvoiceTable();
+        loadStaffTable();
     }//GEN-LAST:event_searchTextFieldActionPerformed
 
     private void newInvoiceButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newInvoiceButton1ActionPerformed
@@ -339,36 +455,100 @@ public class StaffManagement extends javax.swing.JPanel {
 
     private void sortByComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_sortByComboBoxItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
-            loadInvoiceTable();
+            loadStaffTable();
         }
     }//GEN-LAST:event_sortByComboBoxItemStateChanged
 
-    private void newInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newInvoiceButtonActionPerformed
-//        NewInvoice newInvoice = new NewInvoice(this);
-//        newInvoice.setVisible(true);
-    }//GEN-LAST:event_newInvoiceButtonActionPerformed
+    private void newStaffMemberButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newStaffMemberButtonActionPerformed
+        if (accessControl.hasAccess(AccessHandler.ADD_NEW_STAFF_MEMBER)) {
+            AddNewStaffMember addNewStaffMember = new AddNewStaffMember(home, true, this);
+            addNewStaffMember.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "No Permissions for '" + Signin.userBean.getStaffRole() + "S'", "Access Denied", JOptionPane.WARNING_MESSAGE);
+        }
+
+
+    }//GEN-LAST:event_newStaffMemberButtonActionPerformed
 
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
-        loadInvoiceTable();
+        loadStaffTable();
     }//GEN-LAST:event_searchTextFieldKeyReleased
+
+    private void staffRoleComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_staffRoleComboBoxItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            loadStaffTable();
+        }
+    }//GEN-LAST:event_staffRoleComboBoxItemStateChanged
+
+    private void activeStatusComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_activeStatusComboBoxItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            loadStaffTable();
+        }
+    }//GEN-LAST:event_activeStatusComboBoxItemStateChanged
+
+    private void staffTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_staffTableMouseClicked
+        if (evt.getClickCount() == 3) {
+            int selectedRow = staffTable.getSelectedRow();
+
+            if (selectedRow != -1) {
+
+                String nic = String.valueOf(staffTable.getValueAt(selectedRow, 0));
+
+                int result = JOptionPane.showConfirmDialog(
+                        null,
+                        "Are you sure to change status?",
+                        "Confirmation",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE
+                );
+
+                if (result == JOptionPane.YES_OPTION) {
+                    try {
+                        ResultSet resultSet = MySQL.execute("SELECT `staff_status_id` FROM staff WHERE nic = '" + nic + "'");
+
+                        if (resultSet.next()) {
+                            String statusId = resultSet.getString("staff_status_id");
+                            String updatingStatusId = statusId.equals("1") ? "2" : "1";
+
+                            MySQL.execute("UPDATE staff SET staff_status_id='" + updatingStatusId + "' WHERE nic = '" + nic + "' ");
+                            loadStaffTable();
+                            JOptionPane.showMessageDialog(this, "User " + (updatingStatusId.equals("1") ? "Activated" : "Deactivated") + " Successfully", "Success", JOptionPane.INFORMATION_MESSAGE, new ImageIcon(getClass().getResource("/resources/success.png")));
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+
+            }
+
+        }
+    }//GEN-LAST:event_staffTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JComboBox<String> activeStatusComboBox;
     private javax.swing.JButton clearSearchButton;
-    private javax.swing.JTable invoiceTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
+    private javax.swing.JPanel jPanel9;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton newInvoiceButton;
     private javax.swing.JButton newInvoiceButton1;
+    private javax.swing.JButton newStaffMemberButton;
     private javax.swing.JTextField searchTextField;
     private javax.swing.JComboBox<String> sortByComboBox;
+    private javax.swing.JComboBox<String> staffRoleComboBox;
+    private javax.swing.JTable staffTable;
     // End of variables declaration//GEN-END:variables
 }

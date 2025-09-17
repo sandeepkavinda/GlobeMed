@@ -1,19 +1,24 @@
 package panels;
 
 import SubGUI.AddNewReport;
+import SubGUI.DiagnosticResultReport;
+import SubGUI.SinglePatientDetails;
 import controller.ReportTableQueryBuilder;
+import controller.permissions.AccessHandler;
 import gui.Home;
+import gui.Signin;
 import java.awt.event.ItemEvent;
 import model.MySQL;
 import java.sql.ResultSet;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class ReportsManagement extends javax.swing.JPanel {
 
     private Home home;
-    
+
     public ReportsManagement(Home home) {
         this.home = home;
         initComponents();
@@ -51,11 +56,11 @@ public class ReportsManagement extends javax.swing.JPanel {
                             .setOrder(sortBy)
                             .build()
             );
-            
-            System.out.println( new ReportTableQueryBuilder()
-                            .search(search).setType(reportType)
-                            .setOrder(sortBy)
-                            .build());
+
+            System.out.println(new ReportTableQueryBuilder()
+                    .search(search).setType(reportType)
+                    .setOrder(sortBy)
+                    .build());
 
             while (results.next()) {
                 Vector v = new Vector();
@@ -106,6 +111,7 @@ public class ReportsManagement extends javax.swing.JPanel {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         reportTable = new javax.swing.JTable();
+        jLabel8 = new javax.swing.JLabel();
 
         setMinimumSize(new java.awt.Dimension(852, 617));
         setPreferredSize(new java.awt.Dimension(852, 617));
@@ -322,7 +328,14 @@ public class ReportsManagement extends javax.swing.JPanel {
             }
         });
         reportTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        reportTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                reportTableMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(reportTable);
+
+        jLabel8.setText("Diagnostic Reports");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -330,14 +343,20 @@ public class ReportsManagement extends javax.swing.JPanel {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addComponent(jLabel8)
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+                .addComponent(jLabel8)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 452, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -393,8 +412,20 @@ public class ReportsManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_searchTextFieldKeyReleased
 
     private void reportTypeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_reportTypeComboBoxItemStateChanged
-       loadReportTable();
+        loadReportTable();
     }//GEN-LAST:event_reportTypeComboBoxItemStateChanged
+
+    private void reportTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_reportTableMouseClicked
+        if (evt.getClickCount() == 2) {
+
+            int selectedRow = reportTable.getSelectedRow();
+            if (selectedRow != -1) {
+                String reportId = String.valueOf(reportTable.getValueAt(selectedRow, 0));
+                new DiagnosticResultReport(reportId, null);
+            }
+
+        }
+    }//GEN-LAST:event_reportTableMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -403,6 +434,7 @@ public class ReportsManagement extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;

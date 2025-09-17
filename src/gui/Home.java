@@ -1,10 +1,14 @@
 package gui;
 
+import controller.permissions.AccessControl;
+import controller.permissions.AccessHandler;
+import static controller.permissions.AccessHandler.DISPLAY_DASHBOARD;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import javax.swing.JButton;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import panels.AppointmentManagement;
@@ -18,6 +22,7 @@ import panels.StaffManagement;
 
 public class Home extends javax.swing.JFrame {
 
+    public AccessControl accessControl = new AccessControl();
     int maxMenuSize = 200;
     int minMenuSize = 40;
     Boolean isStartingMenuMaximizing = true;
@@ -31,7 +36,15 @@ public class Home extends javax.swing.JFrame {
         this.setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/resources/icon.png")));
         initComponents();
         showMenu();
-        loadPanel(new Dashboard(), dashboardButton, dashboardActiveBar);
+        
+        if(Signin.userBean.getStaffRole().equals("ADMIN")){
+            loadPanel(new Dashboard(), dashboardButton, dashboardActiveBar);    
+        }else{
+            loadPanel(new PatientManagement(this), patientManagementButton, patientManagementActiveBar);
+        }
+        
+        
+        
         loggedUserNamejLabel.setText(Signin.userBean.getFirstName() + " " + Signin.userBean.getLastName());
         loggedUserRolejLabel.setText(Signin.userBean.getStaffRole());
 
@@ -277,7 +290,7 @@ public class Home extends javax.swing.JFrame {
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 714, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
@@ -323,7 +336,7 @@ public class Home extends javax.swing.JFrame {
                         .addComponent(loggedUserNamejLabel)
                         .addGap(0, 0, 0)
                         .addComponent(loggedUserRolejLabel)
-                        .addGap(0, 8, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
                     .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(9, 9, 9))
         );
@@ -346,10 +359,10 @@ public class Home extends javax.swing.JFrame {
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(12, 12, 12)
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE)
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE)
                     .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 62, Short.MAX_VALUE))
-                .addGap(12, 12, 12))
+                    .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, 54, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         jPanel8.setBackground(new java.awt.Color(153, 255, 153));
@@ -698,7 +711,7 @@ public class Home extends javax.swing.JFrame {
         );
         jPanel8Layout.setVerticalGroup(
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 587, Short.MAX_VALUE)
+            .addComponent(MainPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 601, Short.MAX_VALUE)
             .addComponent(NavigationPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
@@ -747,27 +760,55 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_menuChangeButtonActionPerformed
 
     private void dashboardButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_dashboardButtonActionPerformed
-        loadPanel(new Dashboard(), dashboardButton, dashboardActiveBar);
+        if (accessControl.hasAccess(AccessHandler.DISPLAY_DASHBOARD)) {
+            loadPanel(new Dashboard(), dashboardButton, dashboardActiveBar);
+        } else {
+            JOptionPane.showMessageDialog(this, "No Permissions for '" + Signin.userBean.getStaffRole() + "S'", "Access Denied", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_dashboardButtonActionPerformed
 
     private void staffManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_staffManagementButtonActionPerformed
-        loadPanel(new StaffManagement(), staffManagementButton, staffManagementActiveBar);
+        if (accessControl.hasAccess(AccessHandler.DISPLAY_STAFF)) {
+            loadPanel(new StaffManagement(this), staffManagementButton, staffManagementActiveBar);
+        } else {
+            JOptionPane.showMessageDialog(this, "No Permissions for '" + Signin.userBean.getStaffRole() + "S'", "Access Denied", JOptionPane.WARNING_MESSAGE);
+        }
+
     }//GEN-LAST:event_staffManagementButtonActionPerformed
 
     private void serviceManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_serviceManagementButtonActionPerformed
-        loadPanel(new ServiceManagement(), serviceManagementButton, serviceManagementActiveBar);
+        if (accessControl.hasAccess(AccessHandler.DISPLAY_SERVICE)) {
+            loadPanel(new ServiceManagement(this), serviceManagementButton, serviceManagementActiveBar);
+        } else {
+            JOptionPane.showMessageDialog(this, "No Permissions for '" + Signin.userBean.getStaffRole() + "S'", "Access Denied", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_serviceManagementButtonActionPerformed
 
     private void patientManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_patientManagementButtonActionPerformed
-        loadPanel(new PatientManagement(this), patientManagementButton, patientManagementActiveBar);
+        if (accessControl.hasAccess(AccessHandler.DISPLAY_PATIENT)) {
+            loadPanel(new PatientManagement(this), patientManagementButton, patientManagementActiveBar);
+        } else {
+            JOptionPane.showMessageDialog(this, "No Permissions for '" + Signin.userBean.getStaffRole() + "S'", "Access Denied", JOptionPane.WARNING_MESSAGE);
+        }
+
     }//GEN-LAST:event_patientManagementButtonActionPerformed
 
     private void appointmentManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_appointmentManagementButtonActionPerformed
-        loadPanel(new AppointmentManagement(this), appointmentManagementButton, appointmentManagementActiveBar);
+        if (accessControl.hasAccess(AccessHandler.DISPLAY_APPOINTMENTS)) {
+            loadPanel(new AppointmentManagement(this), appointmentManagementButton, appointmentManagementActiveBar);
+        } else {
+            JOptionPane.showMessageDialog(this, "No Permissions for '" + Signin.userBean.getStaffRole() + "S'", "Access Denied", JOptionPane.WARNING_MESSAGE);
+        }
+
     }//GEN-LAST:event_appointmentManagementButtonActionPerformed
 
     private void billingManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_billingManagementButtonActionPerformed
-        loadPanel(new BillingManagement(this), billingManagementButton, billingManagementActiveBar);
+        if (accessControl.hasAccess(AccessHandler.DISPLAY_BILLING)) {
+            loadPanel(new BillingManagement(this), billingManagementButton, billingManagementActiveBar);
+        } else {
+            JOptionPane.showMessageDialog(this, "No Permissions for '" + Signin.userBean.getStaffRole() + "S'", "Access Denied", JOptionPane.WARNING_MESSAGE);
+        }
+
     }//GEN-LAST:event_billingManagementButtonActionPerformed
 
     private void settingsButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingsButtonActionPerformed
@@ -796,11 +837,20 @@ public class Home extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void hospitalManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_hospitalManagementButtonActionPerformed
-        loadPanel(new HospitaManagement(), hospitalManagementButton, hospitalManagementActiveBar);
+        if (accessControl.hasAccess(AccessHandler.DISPLAY_HOSPITAL)) {
+            loadPanel(new HospitaManagement(), hospitalManagementButton, hospitalManagementActiveBar);
+        } else {
+            JOptionPane.showMessageDialog(this, "No Permissions for '" + Signin.userBean.getStaffRole() + "S'", "Access Denied", JOptionPane.WARNING_MESSAGE);
+        }
+
     }//GEN-LAST:event_hospitalManagementButtonActionPerformed
 
     private void reportsManagementButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_reportsManagementButtonActionPerformed
-        loadPanel(new ReportsManagement(this), reportsManagementButton, reportManagementActiveBar);
+        if (accessControl.hasAccess(AccessHandler.DISPLAY_REPORT)) {
+            loadPanel(new ReportsManagement(this), reportsManagementButton, reportManagementActiveBar);
+        } else {
+            JOptionPane.showMessageDialog(this, "No Permissions for '" + Signin.userBean.getStaffRole() + "S'", "Access Denied", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_reportsManagementButtonActionPerformed
 
     /**
@@ -855,6 +905,7 @@ public class Home extends javax.swing.JFrame {
     private javax.swing.JPanel dashboardActiveBar;
     private javax.swing.JButton dashboardButton;
     private javax.swing.JPanel hospitalManagementActiveBar;
+    private javax.swing.JPanel hospitalManagementActiveBar1;
     private javax.swing.JButton hospitalManagementButton;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;

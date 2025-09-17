@@ -119,7 +119,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace pref="64" max="32767" attributes="0"/>
+                      <EmptySpace pref="55" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel1" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel4" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -160,7 +160,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Today Sales"/>
+                <Property name="text" type="java.lang.String" value="This Month Income"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -176,7 +176,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
-                      <EmptySpace pref="74" max="32767" attributes="0"/>
+                      <EmptySpace pref="71" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel2" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel5" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -217,7 +217,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Today Expences"/>
+                <Property name="text" type="java.lang.String" value="All Appointments"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -274,7 +274,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Today Invoices"/>
+                <Property name="text" type="java.lang.String" value="Today Appointments"/>
               </Properties>
             </Component>
           </SubComponents>
@@ -290,7 +290,7 @@
             <DimensionLayout dim="0">
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" alignment="0" attributes="0">
-                      <EmptySpace pref="77" max="32767" attributes="0"/>
+                      <EmptySpace pref="108" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel7" alignment="1" min="-2" max="-2" attributes="0"/>
                           <Component id="jLabel8" alignment="1" min="-2" max="-2" attributes="0"/>
@@ -331,7 +331,7 @@
                 <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
                   <Color blue="ff" green="ff" red="ff" type="rgb"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="Low Stock Alerts"/>
+                <Property name="text" type="java.lang.String" value="Staff Count"/>
               </Properties>
             </Component>
           </SubComponents>

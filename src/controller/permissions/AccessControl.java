@@ -10,8 +10,6 @@ package controller.permissions;
  */
 public class AccessControl {
 
-    public static final String ADD_MEDICAL_RECORD = "ADD MEDICAL RECORD";
-
     private AccessHandler chain;
 
     public AccessControl() {
@@ -27,7 +25,7 @@ public class AccessControl {
         nurse.setNextHandler(pharmacist);
         pharmacist.setNextHandler(receptionist);
 
-        chain = doctor;
+        chain = admin;
     }
 
     public boolean hasAccess(String action) {

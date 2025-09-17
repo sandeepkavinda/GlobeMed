@@ -24,7 +24,9 @@ public class DiagnosticResultReport extends javax.swing.JFrame {
 
         if (checkReportId()) {
             initComponents();
-            addNewReport.setVisible(false);
+            if (addNewReport != null) {
+                addNewReport.setVisible(false);
+            }
             loadReportData();
             this.setVisible(true);
 
@@ -68,6 +70,7 @@ public class DiagnosticResultReport extends javax.swing.JFrame {
                 genderLabel.setText(":   " + resultSet.getString("g.gender"));
                 dateLabel.setText(":   " + currentDateTime);
                 reportIdTextLabel.setText(resultSet.getString("r.id"));
+                reportTitleLabel.setText(resultSet.getString("r.title"));
 
                 ResultSet reportRs = MySQL.execute("SELECT * FROM report_item "
                         + "WHERE report_id = '" + reportId + "'");
@@ -116,7 +119,7 @@ public class DiagnosticResultReport extends javax.swing.JFrame {
         jSeparator3 = new javax.swing.JSeparator();
         jScrollPane1 = new javax.swing.JScrollPane();
         repotItemsTable = new javax.swing.JTable();
-        jLabel3 = new javax.swing.JLabel();
+        reportTitleLabel = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setResizable(false);
@@ -259,9 +262,9 @@ public class DiagnosticResultReport extends javax.swing.JFrame {
             repotItemsTable.getColumnModel().getColumn(0).setMaxWidth(50);
         }
 
-        jLabel3.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
-        jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel3.setText("Blood Test");
+        reportTitleLabel.setFont(new java.awt.Font("Poppins", 1, 14)); // NOI18N
+        reportTitleLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        reportTitleLabel.setText("Blood Test");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -275,7 +278,7 @@ public class DiagnosticResultReport extends javax.swing.JFrame {
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jSeparator3, javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 572, Short.MAX_VALUE)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(reportTitleLabel, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -291,7 +294,7 @@ public class DiagnosticResultReport extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jSeparator3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(24, 24, 24)
-                .addComponent(jLabel3)
+                .addComponent(reportTitleLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 377, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 120, Short.MAX_VALUE)
@@ -367,7 +370,6 @@ public class DiagnosticResultReport extends javax.swing.JFrame {
     private javax.swing.JLabel genderLabel;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -377,6 +379,7 @@ public class DiagnosticResultReport extends javax.swing.JFrame {
     private javax.swing.JSeparator jSeparator3;
     private javax.swing.JLabel patientFullNameLabel;
     private javax.swing.JLabel reportIdTextLabel;
+    private javax.swing.JLabel reportTitleLabel;
     private javax.swing.JTable repotItemsTable;
     private javax.swing.JLabel totalTextLabel;
     private javax.swing.JLabel totalTextLabel1;

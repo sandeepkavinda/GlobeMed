@@ -312,7 +312,7 @@
                           <Color blue="33" green="33" red="33" type="rgb"/>
                         </Property>
                         <Property name="horizontalAlignment" type="int" value="0"/>
-                        <Property name="text" type="java.lang.String" value="Pending Appointments to Add Medical Records and Treatments"/>
+                        <Property name="text" type="java.lang.String" value="Pending to Medical Records (Double Click To Open)"/>
                         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
                           <Border info="org.netbeans.modules.form.compat2.border.EmptyBorderInfo">
                             <EmptyBorder bottom="1" left="10" right="1" top="1"/>

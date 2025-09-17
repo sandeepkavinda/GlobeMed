@@ -4,62 +4,76 @@
  */
 package panels;
 
+import SubGUI.AddNewService;
+import SubGUI.AddNewStaffMember;
+import controller.ServiceTableQueryBuilder;
+import controller.permissions.AccessControl;
+import controller.permissions.AccessHandler;
+import gui.Home;
+import gui.Signin;
 import java.awt.event.ItemEvent;
 import model.MySQL;
 import java.sql.ResultSet;
 import java.util.Vector;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
+import model.CurrencyFormatter;
 
 public class ServiceManagement extends javax.swing.JPanel {
+    
+    private Home home;
+    private AccessControl accessControl = new AccessControl();
 
-    public ServiceManagement() {
+
+    public ServiceManagement(Home home) {
+        this.home = home;
         initComponents();
-        loadInvoiceTable();
+        loadServiceTypes();
+        loadServiceTable();
     }
 
-    public void loadInvoiceTable() {
+    private void loadServiceTypes() {
+        try {
+            ResultSet result = MySQL.execute("SELECT * FROM `service_type`");
+            Vector v = new Vector();
+            v.add("All");
+            while (result.next()) {
+                v.add(result.getString("type"));
+            }
+            DefaultComboBoxModel model = new DefaultComboBoxModel(v);
+            serviceTypeComboBox.setModel(model);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loadServiceTable() {
         try {
             String search = searchTextField.getText();
             int sortBy = sortByComboBox.getSelectedIndex();
+            String serviceType = serviceTypeComboBox.getSelectedItem().toString();
 
-            String sortByColumn = "";
-            String sortByType = "";
-
-            if (sortBy == 0) {
-                sortByColumn = "h.id";
-                sortByType = "ASC";
-            } else if (sortBy == 1) {
-                sortByColumn = "h.id";
-                sortByType = "DESC";
-            } else if (sortBy == 2) {
-                sortByColumn = "h.name";
-                sortByType = "ASC";
-            } else if (sortBy == 3) {
-                sortByColumn = "h.name";
-                sortByType = "DESC";
-            } else if (sortBy == 4) {
-                sortByColumn = "staff_count";
-                sortByType = "DESC";
-            } else if (sortBy == 5) {
-                sortByColumn = "staff_count";
-                sortByType = "ASC";
-            }
-
-            DefaultTableModel model = (DefaultTableModel) invoiceTable.getModel();
+            DefaultTableModel model = (DefaultTableModel) serviceTable.getModel();
             model.setRowCount(0);
-            
-            ResultSet results = MySQL.execute("SELECT h.*, COUNT(s.nic) AS staff_count FROM hospital h "
-                    + "LEFT JOIN staff s ON h.id = s.hospital_id "
-                    + "WHERE h.id LIKE '%"+search+"%' OR h.name LIKE '%"+search+"%' "
-                    + "GROUP BY h.id "
-                    + "ORDER BY "+sortByColumn+" "+sortByType+" ");
+
+            ResultSet results = MySQL.execute(
+                    new ServiceTableQueryBuilder()
+                            .search(search)
+                            .order(sortBy)
+                            .serviceType(serviceType)
+                            .build()
+            );
 
             while (results.next()) {
                 Vector v = new Vector();
                 v.add(results.getString("id"));
-                v.add(results.getString("name"));
-                v.add(results.getString("staff_count"));
-                
+                v.add(results.getString("service_name"));
+                v.add(results.getString("doctor_name"));
+                v.add(results.getString("description"));
+                v.add(CurrencyFormatter.formatCurrency(results.getDouble("price")));
+                v.add(results.getString("time"));
+                v.add(results.getString("type"));
                 model.addRow(v);
             }
         } catch (Exception e) {
@@ -70,7 +84,9 @@ public class ServiceManagement extends javax.swing.JPanel {
     private void clearSearch() {
         searchTextField.setText("");
         sortByComboBox.setSelectedIndex(0);
-        loadInvoiceTable();
+        serviceTypeComboBox.setSelectedIndex(0);
+
+        loadServiceTable();
     }
 
     /**
@@ -91,13 +107,16 @@ public class ServiceManagement extends javax.swing.JPanel {
         jPanel4 = new javax.swing.JPanel();
         sortByComboBox = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
+        jPanel5 = new javax.swing.JPanel();
+        serviceTypeComboBox = new javax.swing.JComboBox<>();
+        jLabel7 = new javax.swing.JLabel();
         jPanel8 = new javax.swing.JPanel();
         clearSearchButton = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
-        newInvoiceButton = new javax.swing.JButton();
+        newServiceButton = new javax.swing.JButton();
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        invoiceTable = new javax.swing.JTable();
+        serviceTable = new javax.swing.JTable();
 
         setMinimumSize(new java.awt.Dimension(852, 617));
         setPreferredSize(new java.awt.Dimension(852, 617));
@@ -144,7 +163,7 @@ public class ServiceManagement extends javax.swing.JPanel {
                         .addComponent(jLabel6)
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel7Layout.createSequentialGroup()
-                        .addComponent(searchTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 155, Short.MAX_VALUE)
+                        .addComponent(searchTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 113, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(newInvoiceButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
@@ -165,7 +184,7 @@ public class ServiceManagement extends javax.swing.JPanel {
 
         jPanel4.setForeground(new java.awt.Color(255, 51, 51));
 
-        sortByComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Hospital Id (Ascending) ", "Hospital Id (Descending)", "Hospital Name (A-Z)", "Hospital Name (Z-A)", "Number of Staff (High to Low)", "Number of Staff (Low to High)" }));
+        sortByComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Service Id (Descending)", "Service Id (Ascending) ", "Service Name (A-Z)", "Service Name (Z-A)", "Price (High to Low)", "Price (Low to High)" }));
         sortByComboBox.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 sortByComboBoxItemStateChanged(evt);
@@ -181,7 +200,7 @@ public class ServiceManagement extends javax.swing.JPanel {
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(sortByComboBox, 0, 198, Short.MAX_VALUE)
+                    .addComponent(sortByComboBox, 0, 156, Short.MAX_VALUE)
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addComponent(jLabel5)
                         .addGap(0, 0, Short.MAX_VALUE)))
@@ -198,6 +217,41 @@ public class ServiceManagement extends javax.swing.JPanel {
         );
 
         jPanel2.add(jPanel4);
+
+        jPanel5.setForeground(new java.awt.Color(255, 51, 51));
+
+        serviceTypeComboBox.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                serviceTypeComboBoxItemStateChanged(evt);
+            }
+        });
+
+        jLabel7.setText("Service Type");
+
+        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
+        jPanel5.setLayout(jPanel5Layout);
+        jPanel5Layout.setHorizontalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(serviceTypeComboBox, 0, 156, Short.MAX_VALUE)
+                    .addGroup(jPanel5Layout.createSequentialGroup()
+                        .addComponent(jLabel7)
+                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addContainerGap())
+        );
+        jPanel5Layout.setVerticalGroup(
+            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel5Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel7)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(serviceTypeComboBox, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        jPanel2.add(jPanel5);
 
         jPanel8.setForeground(new java.awt.Color(255, 51, 51));
 
@@ -217,7 +271,7 @@ public class ServiceManagement extends javax.swing.JPanel {
             jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel8Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(clearSearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 198, Short.MAX_VALUE)
+                .addComponent(clearSearchButton, javax.swing.GroupLayout.DEFAULT_SIZE, 156, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel8Layout.setVerticalGroup(
@@ -233,10 +287,10 @@ public class ServiceManagement extends javax.swing.JPanel {
         jPanel6.setBorder(javax.swing.BorderFactory.createMatteBorder(0, 1, 0, 0, new java.awt.Color(204, 204, 204)));
         jPanel6.setForeground(new java.awt.Color(255, 51, 51));
 
-        newInvoiceButton.setText("New Invoice");
-        newInvoiceButton.addActionListener(new java.awt.event.ActionListener() {
+        newServiceButton.setText("New Service");
+        newServiceButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                newInvoiceButtonActionPerformed(evt);
+                newServiceButtonActionPerformed(evt);
             }
         });
 
@@ -246,14 +300,14 @@ public class ServiceManagement extends javax.swing.JPanel {
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(newInvoiceButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(newServiceButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addComponent(newInvoiceButton, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
+                .addComponent(newServiceButton, javax.swing.GroupLayout.DEFAULT_SIZE, 37, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
@@ -261,27 +315,27 @@ public class ServiceManagement extends javax.swing.JPanel {
 
         jScrollPane1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(204, 204, 204)));
 
-        invoiceTable.setModel(new javax.swing.table.DefaultTableModel(
+        serviceTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Hospital Id", "Hospital Name", "Number of Staff Members"
+                "Service Id", "Service", "Doctor", "Description", "Price", "Time Slot", "Service Type"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
                 return canEdit [columnIndex];
             }
         });
-        invoiceTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
-        jScrollPane1.setViewportView(invoiceTable);
-        if (invoiceTable.getColumnModel().getColumnCount() > 0) {
-            invoiceTable.getColumnModel().getColumn(1).setMinWidth(150);
-            invoiceTable.getColumnModel().getColumn(1).setPreferredWidth(150);
+        serviceTable.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jScrollPane1.setViewportView(serviceTable);
+        if (serviceTable.getColumnModel().getColumnCount() > 0) {
+            serviceTable.getColumnModel().getColumn(1).setMinWidth(150);
+            serviceTable.getColumnModel().getColumn(1).setPreferredWidth(150);
         }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -331,7 +385,7 @@ public class ServiceManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_clearSearchButtonActionPerformed
 
     private void searchTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchTextFieldActionPerformed
-        loadInvoiceTable();
+        loadServiceTable();
     }//GEN-LAST:event_searchTextFieldActionPerformed
 
     private void newInvoiceButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newInvoiceButton1ActionPerformed
@@ -339,36 +393,50 @@ public class ServiceManagement extends javax.swing.JPanel {
 
     private void sortByComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_sortByComboBoxItemStateChanged
         if (evt.getStateChange() == ItemEvent.SELECTED) {
-            loadInvoiceTable();
+            loadServiceTable();
         }
     }//GEN-LAST:event_sortByComboBoxItemStateChanged
 
-    private void newInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newInvoiceButtonActionPerformed
-//        NewInvoice newInvoice = new NewInvoice(this);
-//        newInvoice.setVisible(true);
-    }//GEN-LAST:event_newInvoiceButtonActionPerformed
+    private void newServiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newServiceButtonActionPerformed
+         if (accessControl.hasAccess(AccessHandler.ADD_NEW_SERVICE)) {
+             AddNewService addNewService = new AddNewService(home, true, this);
+            addNewService.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "No Permissions for '" + Signin.userBean.getStaffRole() + "S'", "Access Denied", JOptionPane.WARNING_MESSAGE);
+        }
+        
+        
+       
+    }//GEN-LAST:event_newServiceButtonActionPerformed
 
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
-        loadInvoiceTable();
+        loadServiceTable();
     }//GEN-LAST:event_searchTextFieldKeyReleased
+
+    private void serviceTypeComboBoxItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_serviceTypeComboBoxItemStateChanged
+        loadServiceTable();
+    }//GEN-LAST:event_serviceTypeComboBoxItemStateChanged
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton clearSearchButton;
-    private javax.swing.JTable invoiceTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel4;
+    private javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     private javax.swing.JPanel jPanel8;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JButton newInvoiceButton;
     private javax.swing.JButton newInvoiceButton1;
+    private javax.swing.JButton newServiceButton;
     private javax.swing.JTextField searchTextField;
+    private javax.swing.JTable serviceTable;
+    private javax.swing.JComboBox<String> serviceTypeComboBox;
     private javax.swing.JComboBox<String> sortByComboBox;
     // End of variables declaration//GEN-END:variables
 }

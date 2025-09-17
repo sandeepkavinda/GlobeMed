@@ -7,17 +7,22 @@ package panels;
 import SubGUI.AddNewPatient;
 import SubGUI.SinglePatientDetails;
 import controller.PatientTableQueryBuilder;
+import controller.permissions.AccessControl;
+import controller.permissions.AccessHandler;
 import gui.Home;
+import gui.Signin;
 import java.awt.event.ItemEvent;
 import model.MySQL;
 import java.sql.ResultSet;
 import java.util.Vector;
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 public class PatientManagement extends javax.swing.JPanel {
 
     private Home home;
+    private AccessControl accessControl = new AccessControl();
 
     public PatientManagement(Home home) {
         this.home = home;
@@ -391,8 +396,15 @@ public class PatientManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_sortByComboBoxItemStateChanged
 
     private void newInvoiceButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_newInvoiceButtonActionPerformed
-        AddNewPatient addNewPatient = new AddNewPatient(home, true, this);
-        addNewPatient.setVisible(true);
+
+        if (accessControl.hasAccess(AccessHandler.ADD_NEW_PATIENT)) {
+            AddNewPatient addNewPatient = new AddNewPatient(home, true, this);
+            addNewPatient.setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, "No Permissions for '" + Signin.userBean.getStaffRole() + "S'", "Access Denied", JOptionPane.WARNING_MESSAGE);
+        }
+
+
     }//GEN-LAST:event_newInvoiceButtonActionPerformed
 
     private void searchTextFieldKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_searchTextFieldKeyReleased
@@ -406,12 +418,20 @@ public class PatientManagement extends javax.swing.JPanel {
     }//GEN-LAST:event_genderComboBoxItemStateChanged
 
     private void patientTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_patientTableMouseClicked
+
         if (evt.getClickCount() == 2) {
+
             int selectedRow = patientTable.getSelectedRow();
             if (selectedRow != -1) {
-                String patientNic = String.valueOf(patientTable.getValueAt(selectedRow, 0));
-                SinglePatientDetails patientDetails = new SinglePatientDetails(patientNic,home);
-                patientDetails.setVisible(true);
+
+                if (accessControl.hasAccess(AccessHandler.VIEW_PATIENT_DETAILS)) {
+                    String patientNic = String.valueOf(patientTable.getValueAt(selectedRow, 0));
+                    SinglePatientDetails patientDetails = new SinglePatientDetails(patientNic, home);
+                    patientDetails.setVisible(true);
+                } else {
+                    JOptionPane.showMessageDialog(this, "No Permissions for '" + Signin.userBean.getStaffRole() + "S'", "Access Denied", JOptionPane.WARNING_MESSAGE);
+                }
+
             }
 
         }
