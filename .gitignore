@@ -14,3 +14,6 @@ nbproject/private/
 # OS-specific
 .DS_Store
 Thumbs.db
+
+# DB propeties
+/config/db.properties

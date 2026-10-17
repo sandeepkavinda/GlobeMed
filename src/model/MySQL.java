@@ -1,9 +1,11 @@
 package model;
 
+import java.io.FileInputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.Properties;
 
 public class MySQL {
 
@@ -11,8 +13,18 @@ public class MySQL {
 
     static {
         try {
+             Properties properties = new Properties();
+
+            try (FileInputStream file =
+                    new FileInputStream("config/db.properties")) {
+                properties.load(file);
+            }
             Class.forName("com.mysql.cj.jdbc.Driver");
-            conncetion = DriverManager.getConnection("jdbc:mysql://localhost:3306/globemed", "root", "Sandeep/Root/1234");
+            conncetion = DriverManager.getConnection(
+                    properties.getProperty("db.url"),
+                properties.getProperty("db.username"),
+                properties.getProperty("db.password")
+            );
         } catch (Exception e) {
             e.printStackTrace();
         }
