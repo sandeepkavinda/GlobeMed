@@ -94,6 +94,24 @@ GlobeMed implements a permission-based access control system. Each user role is 
 | Generate Patient Medical Reports |  Yes  |  Yes   |   —   |    Yes     |     Yes      |
 | Generate Financial Reports       |  Yes  |   —    |   —   |     —      |      —       |
 
+## Project Structure
+
+```text
+GlobeMed/
+├── build/
+├── config/
+├── database/
+├── DB Model/
+├── lib/
+├── nbproject/
+├── src/
+├── .gitignore
+├── build.xml
+├── LICENSE
+├── manifest.mf
+└── README.md
+```
+
 ## Installation and Setup
 
 Follow these steps to set up the project locally.
@@ -139,6 +157,18 @@ Make sure you have installed:
 
 5. **Run the application**
    - In the **Projects** panel, right-click the **GlobeMed** project and select **Run**.
+
+## Sample Login Credentials
+
+Use the following credentials to log in to the GlobeMed Hospital Management System.
+
+| Staff Role   | NIC            | Password    |
+| ------------ | -------------- | ----------- |
+| Admin        | `199400400444` | `admin123`  |
+| Doctor       | `199012345678` | `doctor123` |
+| Nurse        | `199200200222` | `nurse123`  |
+| Pharmacist   | `198712349876` | `pham123`   |
+| Receptionist | `199265478901` | `resip123`  |
 
 ## Project Objectives
 
